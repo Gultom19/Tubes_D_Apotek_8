@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tugasbesar.entity.Obat
-
+//aa
 class FragmentObat: Fragment() {
 
     override fun onCreateView(
