@@ -29,6 +29,10 @@ class HomeActivity : AppCompatActivity() {
                     changeFragment(FragmentPromo())
                     true
                 }
+                R.id.menu_account ->{
+                    changeFragment(FragmentAccount())
+                    true
+                }
                 else -> false
             }
         }
