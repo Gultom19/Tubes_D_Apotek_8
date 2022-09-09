@@ -16,7 +16,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var inputPassword: TextInputLayout
     private lateinit var usernameView: TextInputEditText
     private lateinit var passwordView: TextInputEditText
-    private lateinit var mainLayout: ConstraintLayout
+    private lateinit var btnLogin: Button
     private lateinit var btnSignUp : TextView
     lateinit var mBundle: Bundle
     lateinit var vUsername: String
@@ -29,11 +29,8 @@ class MainActivity : AppCompatActivity() {
         getSupportActionBar()?.hide()
         inputUsername = findViewById(R.id.inputLayoutUsername)
         inputPassword = findViewById(R.id.inputLayoutPassword)
-        mainLayout = findViewById(R.id.mainLayout)
-//        getBundle()
-//        setText()
         btnSignUp = findViewById(R.id.textBtnSignUp)
-        val btnLogin: Button = findViewById(R.id.btnLogin)
+        btnLogin = findViewById(R.id.btnLogin)
 
         btnSignUp.setOnClickListener {
             val moveRegister = Intent(this@MainActivity, RegisterActivity::class.java)
@@ -55,7 +52,7 @@ class MainActivity : AppCompatActivity() {
                 checkLogin = false
             }
 
-            if (username == vUsername && password == vPassword) checkLogin = true
+            if (username == "a" && password == "b") checkLogin = true
             if (!checkLogin) return@OnClickListener
             val moveHome = Intent(this@MainActivity, HomeActivity::class.java)
             startActivity(moveHome)
