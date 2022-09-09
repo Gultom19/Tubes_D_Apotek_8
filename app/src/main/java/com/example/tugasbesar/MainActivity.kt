@@ -7,29 +7,35 @@ import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
-import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
-
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var inputUsername: TextInputLayout
     private lateinit var inputPassword: TextInputLayout
+    private lateinit var usernameView: TextInputEditText
+    private lateinit var passwordView: TextInputEditText
     private lateinit var mainLayout: ConstraintLayout
+    private lateinit var btnSignUp : TextView
+    lateinit var mBundle: Bundle
+    lateinit var vUsername: String
+    lateinit var vPassword: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        setTitle("User Login")
-
+        getSupportActionBar()?.hide()
         inputUsername = findViewById(R.id.inputLayoutUsername)
         inputPassword = findViewById(R.id.inputLayoutPassword)
         mainLayout = findViewById(R.id.mainLayout)
-        val textBtnSignIn : TextView = findViewById(R.id.textBtnSignUp)
+//        getBundle()
+//        setText()
+        btnSignUp = findViewById(R.id.textBtnSignUp)
         val btnLogin: Button = findViewById(R.id.btnLogin)
 
-        textBtnSignIn.setOnClickListener {
+        btnSignUp.setOnClickListener {
             val moveRegister = Intent(this@MainActivity, RegisterActivity::class.java)
             startActivity(moveRegister)
         }
@@ -49,10 +55,23 @@ class MainActivity : AppCompatActivity() {
                 checkLogin = false
             }
 
-            if (username == "bruh" && password == "bruh") checkLogin = true
+            if (username == vUsername && password == vPassword) checkLogin = true
             if (!checkLogin) return@OnClickListener
             val moveHome = Intent(this@MainActivity, HomeActivity::class.java)
             startActivity(moveHome)
         })
+    }
+
+    fun getBundle(){
+        mBundle = intent.getBundleExtra("register")!!
+        vUsername = mBundle.getString("username")!!
+        vPassword = mBundle.getString("password")!!
+    }
+
+    fun setText(){
+        usernameView = findViewById(R.id.etUsername)
+        usernameView.setText(vUsername,TextView.BufferType.EDITABLE)
+        passwordView = findViewById(R.id.etPassword)
+        passwordView.setText(vPassword,TextView.BufferType.EDITABLE)
     }
 }
