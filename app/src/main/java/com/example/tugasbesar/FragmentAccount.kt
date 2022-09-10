@@ -1,5 +1,6 @@
 package com.example.tugasbesar
 
+import android.content.Intent
 import android.widget.Button
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -13,5 +14,15 @@ class FragmentAccount: Fragment(){
         savedInstanceState: Bundle?
     ): View? {
         return  inflater.inflate(R.layout.fragment_account, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val btnLogout: Button = view.findViewById(R.id.btnLogout)
+
+        btnLogout.setOnClickListener(){
+            val backLogin = Intent(getActivity(), MainActivity::class.java)
+            startActivity(backLogin)
+        }
     }
 }
