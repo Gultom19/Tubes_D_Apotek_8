@@ -8,14 +8,20 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
+import java.lang.NullPointerException
 
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var inputUsername: TextInputLayout
     private lateinit var inputPassword: TextInputLayout
-    private lateinit var mainLayout: ConstraintLayout
+    private lateinit var etUsername: TextInputEditText
+    private lateinit var etPassword: TextInputEditText
+    lateinit var mbunlde : Bundle
+    lateinit var vUsername : String
+    lateinit var vPassword : String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,9 +31,10 @@ class MainActivity : AppCompatActivity() {
 
         inputUsername = findViewById(R.id.inputLayoutUsername)
         inputPassword = findViewById(R.id.inputLayoutPassword)
-        mainLayout = findViewById(R.id.mainLayout)
         val textBtnSignIn : TextView = findViewById(R.id.textBtnSignUp)
         val btnLogin: Button = findViewById(R.id.btnLogin)
+        getBundle()
+        setText()
 
         textBtnSignIn.setOnClickListener {
             val moveRegister = Intent(this@MainActivity, RegisterActivity::class.java)
@@ -49,10 +56,33 @@ class MainActivity : AppCompatActivity() {
                 checkLogin = false
             }
 
-            if (username == "bruh" && password == "bruh") checkLogin = true
+            if (username == vUsername && password == vPassword) checkLogin = true
             if (!checkLogin) return@OnClickListener
             val moveHome = Intent(this@MainActivity, HomeActivity::class.java)
             startActivity(moveHome)
         })
+    }
+
+    fun getBundle(){
+        try{
+            mbunlde = intent?.getBundleExtra("register")!!
+            if(mbunlde != null){
+                vUsername = mbunlde.getString("username")!!
+                vPassword = mbunlde.getString("password")!!
+            }else{
+
+            }
+        }catch (e: NullPointerException){
+            vUsername = ""
+            vPassword = ""
+        }
+
+    }
+
+    fun setText(){
+        etUsername = findViewById(R.id.etUsername)
+        etUsername.setText(vUsername,TextView.BufferType.EDITABLE)
+        etPassword = findViewById(R.id.etPassword)
+        etPassword.setText(vPassword,TextView.BufferType.EDITABLE)
     }
 }
