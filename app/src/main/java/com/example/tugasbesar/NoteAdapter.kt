@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.tugasbesar.room.Note
 import kotlinx.android.synthetic.main.activity_note_adapter.view.*
 
-class NoteAdapter (private val notes: ArrayList<Note>, private val listener: OnAdapterListener) : RecyclerView.Adapter<NoteAdapter.NoteViewHolder>() {
+class NoteAdapter  (private val notes: ArrayList<Note>, private val listener: OnAdapterListener) : RecyclerView.Adapter<NoteAdapter.NoteViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NoteViewHolder {
         return NoteViewHolder(
             LayoutInflater.from(parent.context).inflate(R.layout.activity_note_adapter,parent, false)
@@ -18,7 +18,7 @@ class NoteAdapter (private val notes: ArrayList<Note>, private val listener: OnA
     }
     override fun onBindViewHolder(holder: NoteViewHolder, position: Int) {
         val note = notes[position]
-        holder.view.text_title.text = note.title
+        holder.view.text_title.text = note.jenis
         holder.view.text_title.setOnClickListener{
             listener.onClick(note)
         }

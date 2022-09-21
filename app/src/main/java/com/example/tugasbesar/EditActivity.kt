@@ -53,7 +53,7 @@ class EditActivity : AppCompatActivity() {
         button_update.setOnClickListener {
             CoroutineScope(Dispatchers.IO).launch {
                 db.noteDao().updateNote(
-                    Note(noteId, edit_title.text.toString(),
+                    Note(noteJenis, edit_jenis.text.toString(),
                         edit_note.text.toString())
                 )
                 finish()
@@ -64,8 +64,8 @@ class EditActivity : AppCompatActivity() {
         noteId = intent.getIntExtra("intent_id", 0)
         CoroutineScope(Dispatchers.IO).launch {
             val notes = db.noteDao().getNote(noteId)[0]
-            edit_title.setText(notes.title)
-            edit_note.setText(notes.note)
+            edit_title.setText(notes.jenis)
+            edit_note.setText(notes.jenis)
         }
     }
     override fun onSupportNavigateUp(): Boolean {

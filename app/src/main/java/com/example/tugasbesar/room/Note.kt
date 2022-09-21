@@ -2,11 +2,12 @@ package com.example.tugasbesar.room
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.example.tugasbesar.entity.Obat
 
 @Entity
 data class Note (
     @PrimaryKey(autoGenerate = true)
-    val id: Int,
-    val title: String,
-    val note: String
+    val obat: String,
+    val jenis: String,
+    val harga: Float
 )
