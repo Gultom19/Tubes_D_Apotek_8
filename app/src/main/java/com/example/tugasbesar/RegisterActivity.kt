@@ -4,6 +4,8 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
+import com.example.tugasbesar.databinding.ActivityMainBinding
+import com.example.tugasbesar.databinding.ActivityRegisterBinding
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 
@@ -14,11 +16,14 @@ class RegisterActivity : AppCompatActivity() {
     private lateinit var tanggal: TextInputLayout
     private lateinit var telepon: TextInputLayout
     private lateinit var btnRegister: Button
+    var binding: ActivityRegisterBinding? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
         setTitle("Register")
+        binding = ActivityRegisterBinding.inflate(layoutInflater)
+        setContentView(binding?.root)
         username = findViewById(R.id.inputLayoutRegisUsername)
         password = findViewById(R.id.inputLayoutRegisPassword)
         email = findViewById(R.id.inputLayoutEmail)
@@ -35,5 +40,10 @@ class RegisterActivity : AppCompatActivity() {
 
             startActivity(moveMain)
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        binding = null
     }
 }
