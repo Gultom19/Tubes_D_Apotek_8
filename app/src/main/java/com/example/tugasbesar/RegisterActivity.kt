@@ -23,7 +23,6 @@ class RegisterActivity : AppCompatActivity() {
     private lateinit var binding: ActivityRegisterBinding
 
     val db by lazy { UserDB(this) }
-    private var userId: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,7 +59,6 @@ class RegisterActivity : AppCompatActivity() {
                 )
                 finish()
             }
-
             startActivity(moveMain)
         }
     }
