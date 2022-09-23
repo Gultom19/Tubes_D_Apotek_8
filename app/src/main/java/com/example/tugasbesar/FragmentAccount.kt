@@ -54,7 +54,7 @@ class FragmentAccount: Fragment(){
         userId = intent.getIntExtra("intent_id", 0)
         CoroutineScope(Dispatchers.IO).launch {
             val notes = db.userDao().getUser(userId)[0]
-            .setText(notes.title)
+            edit_title.setText(notes.title)
             edit_note.setText(notes.note)
         }
     }
