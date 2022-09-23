@@ -3,8 +3,6 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Kuliah/Semester 5/PBP/Tugas Besar/app/src/main/res/layout/activity_home.xml" value="0.1308876811594203" />
-        <entry key="..\:/Kuliah/Semester 5/PBP/Tugas Besar/app/src/main/res/layout/fragment_account.xml" value="0.1308876811594203" />
         <entry key="..\:/Kuliah/Semester 5/PBP/Tugas Besar2/app/src/main/res/layout/activity_home.xml" value="0.1796875" />
         <entry key="..\:/Kuliah/Semester 5/PBP/Tugas Besar2/app/src/main/res/layout/activity_main.xml" value="0.22" />
         <entry key="..\:/Kuliah/Semester 5/PBP/Tugas Besar2/app/src/main/res/layout/activity_register.xml" value="0.22" />
@@ -16,20 +14,13 @@
         <entry key="..\:/Kuliah/Semester 5/PBP/Tugas Besar2/app/src/main/res/menu/bottom_navigation_menu.xml" value="0.1796875" />
         <entry key="..\:/Kuliah/Semester 5/PBP/Tugas Besar2/app/src/main/res/mipmap-anydpi-v26/logoapk.xml" value="0.188" />
         <entry key="..\:/Kuliah/Semester 5/PBP/Tugas Besar2/app/src/main/res/mipmap-anydpi-v26/logoapk_round.xml" value="0.188" />
-        <entry key="..\:/Kuliah/Semester 5/PBP/TugasB/app/src/main/res/drawable/ic_home_24.xml" value="0.1" />
-        <entry key="..\:/Kuliah/Semester 5/PBP/TugasB/app/src/main/res/drawable/ic_lock_24.xml" value="0.1" />
-        <entry key="..\:/Kuliah/Semester 5/PBP/TugasB/app/src/main/res/drawable/ic_user_24.xml" value="0.1" />
-        <entry key="..\:/Kuliah/Semester 5/PBP/TugasB/app/src/main/res/drawable/splash_bg.xml" value="0.1" />
-        <entry key="..\:/Kuliah/Semester 5/PBP/TugasB/app/src/main/res/drawable/splash_brand_logo.xml" value="0.1" />
-        <entry key="..\:/Kuliah/Semester 5/PBP/TugasB/app/src/main/res/layout/activity_edit.xml" value="0.1796875" />
-        <entry key="..\:/Kuliah/Semester 5/PBP/TugasB/app/src/main/res/layout/activity_register.xml" value="0.1796875" />
-        <entry key="..\:/Kuliah/Semester 5/PBP/TugasB/app/src/main/res/layout/activity_splash.xml" value="0.17864583333333334" />
-        <entry key="..\:/Kuliah/Semester 5/PBP/TugasB/app/src/main/res/layout/fragment_account.xml" value="0.1796875" />
-        <entry key="..\:/Kuliah/Semester 5/PBP/TugasB/app/src/main/res/menu/bottom_navigation_menu.xml" value="0.1796875" />
-        <entry key="..\:/Semester 5/Pemrograman Web/Tugas Besar2/app/src/main/res/layout/activity_home.xml" value="0.1" />
+        <entry key="..\:/Semester 5/Pemrograman Berbasis Platform/TugasB/app/src/main/res/drawable/ic_launcher_background.xml" value="0.1" />
+        <entry key="..\:/Semester 5/Pemrograman Berbasis Platform/TugasB/app/src/main/res/layout/activity_note_adapter.xml" value="0.17074275362318841" />
+        <entry key="..\:/Semester 5/Pemrograman Berbasis Platform/TugasB/app/src/main/res/layout/activity_splash.xml" value="0.17074275362318841" />
+        <entry key="..\:/Semester 5/Pemrograman Berbasis Platform/TugasB/app/src/main/res/layout/rv_item_obat.xml" value="0.17074275362318841" />
+        <entry key="..\:/Semester 5/Pemrograman Berbasis Platform/TugasB/app/src/main/res/layout/rv_item_promo.xml" value="0.17074275362318841" />
+        <entry key="..\:/Semester 5/Pemrograman Berbasis Platform/TugasB/app/src/main/res/layout/update_profil.xml" value="0.1287568306010929" />
         <entry key="..\:/Semester 5/Pemrograman Web/Tugas Besar2/app/src/main/res/layout/activity_main.xml" value="0.17074275362318841" />
-        <entry key="..\:/Semester 5/Pemrograman Web/Tugas Besar2/app/src/main/res/layout/activity_register.xml" value="0.1" />
-        <entry key="..\:/Semester 5/Pemrograman Web/Tugas Besar2/app/src/main/res/layout/fragment_account.xml" value="0.1" />
       </map>
     </option>
   </component>
