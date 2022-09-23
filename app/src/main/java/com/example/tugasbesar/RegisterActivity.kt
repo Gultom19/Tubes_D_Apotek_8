@@ -1,13 +1,17 @@
 package com.example.tugasbesar
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
-import com.example.tugasbesar.databinding.ActivityMainBinding
+import androidx.appcompat.app.AppCompatActivity
 import com.example.tugasbesar.databinding.ActivityRegisterBinding
-import com.google.android.material.textfield.TextInputEditText
+import com.example.tugasbesar.room.User
+import com.example.tugasbesar.room.UserDB
 import com.google.android.material.textfield.TextInputLayout
+import kotlinx.android.synthetic.main.activity_register.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class RegisterActivity : AppCompatActivity() {
     private lateinit var username: TextInputLayout
@@ -16,20 +20,26 @@ class RegisterActivity : AppCompatActivity() {
     private lateinit var tanggal: TextInputLayout
     private lateinit var telepon: TextInputLayout
     private lateinit var btnRegister: Button
-    var binding: ActivityRegisterBinding? = null
+    private lateinit var binding: ActivityRegisterBinding
+
+    val db by lazy { UserDB(this) }
+    private var userId: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_register)
-        setTitle("Register")
+
         binding = ActivityRegisterBinding.inflate(layoutInflater)
         setContentView(binding?.root)
-        username = findViewById(R.id.inputLayoutRegisUsername)
-        password = findViewById(R.id.inputLayoutRegisPassword)
-        email = findViewById(R.id.inputLayoutEmail)
-        tanggal = findViewById(R.id.inputLayoutTanggalLahir)
-        telepon = findViewById(R.id.inputLayoutTelepon)
-        btnRegister =findViewById(R.id.btnRegister)
+
+
+
+        setTitle("Register")
+        username = binding.inputLayoutRegisUsername
+        password = binding.inputLayoutRegisPassword
+        email = binding.inputLayoutEmail
+        tanggal = binding.inputLayoutTanggalLahir
+        telepon = binding.inputLayoutTelepon
+        btnRegister = binding.btnRegister
 
         btnRegister.setOnClickListener{
             val moveMain = Intent(this@RegisterActivity, MainActivity::class.java)
@@ -38,12 +48,20 @@ class RegisterActivity : AppCompatActivity() {
             mBundle.putString("password", password.getEditText()?.getText().toString())
             moveMain.putExtra("register", mBundle)
 
+            CoroutineScope(Dispatchers.IO).launch {
+                db.userDao().addUser(
+                    User(
+                        0, username.getEditText()?.getText().toString(),
+                        password.getEditText()?.getText().toString(),
+                        email.getEditText()?.getText().toString(),
+                        tanggal.getEditText()?.getText().toString(),
+                        telepon.getEditText()?.getText().toString(),
+                    )
+                )
+                finish()
+            }
+
             startActivity(moveMain)
         }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        binding = null
     }
 }
