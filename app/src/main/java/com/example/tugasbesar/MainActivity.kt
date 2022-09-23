@@ -1,5 +1,6 @@
 package com.example.tugasbesar
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -8,10 +9,12 @@ import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
+import com.example.tugasbesar.room.User
 import com.example.tugasbesar.room.UserDB
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
+import kotlinx.android.synthetic.main.fragment_account.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -20,6 +23,9 @@ import java.lang.NullPointerException
 
 
 class MainActivity : AppCompatActivity() {
+//    val db by lazy { UserDB(this) }
+//    private var userId: Int = 0
+
     private lateinit var inputUsername: TextInputLayout
     private lateinit var inputPassword: TextInputLayout
     private lateinit var etUsername: TextInputEditText
@@ -27,6 +33,8 @@ class MainActivity : AppCompatActivity() {
     lateinit var mbunlde : Bundle
     lateinit var vUsername : String
     lateinit var vPassword : String
+//    lateinit var checkUsername : String
+//    lateinit var checkPassword : String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,12 +70,33 @@ class MainActivity : AppCompatActivity() {
                 checkLogin = false
             }
 
+//            CoroutineScope(Dispatchers.IO).launch {
+//                checkUsername = db.userDao().getUsername(username)
+//                checkPassword = db.userDao().getPassword(password)
+//                userId = db.userDao().getUserId(username)
+//            }
+
             if (username == vUsername && password == vPassword) checkLogin = true
             if (!checkLogin) return@OnClickListener
-            val moveHome = Intent(this@MainActivity, HomeActivity::class.java)
-            startActivity(moveHome)
+            else{
+                val moveHome = Intent(applicationContext, HomeActivity::class.java)
+                startActivity(moveHome)
+            }
+
         })
     }
+
+//    override fun onStart() {
+//        super.onStart()
+//        loadData()
+//    }
+//
+//    fun loadData() {
+//        CoroutineScope(Dispatchers.IO).launch {
+//            val user = db.userDao().getUser()
+//            Log.d("MainActivity", "dbResponse: $user")
+//        }
+//    }
 
     fun getBundle(){
         try{
