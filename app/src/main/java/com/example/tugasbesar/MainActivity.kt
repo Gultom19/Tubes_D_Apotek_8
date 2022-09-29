@@ -1,6 +1,5 @@
 package com.example.tugasbesar
 
-import android.annotation.SuppressLint
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
@@ -8,27 +7,16 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
-import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
-import com.example.tugasbesar.room.User
-import com.example.tugasbesar.room.UserDB
-import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import kotlinx.android.synthetic.main.fragment_account.*
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import java.lang.NullPointerException
-
 
 
 class MainActivity : AppCompatActivity() {
@@ -123,11 +111,10 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    fun setText(){
+    fun setText() {
         etUsername = findViewById(R.id.etUsername)
-        etUsername.setText(vUsername,TextView.BufferType.EDITABLE)
+        etUsername.setText(vUsername, TextView.BufferType.EDITABLE)
         etPassword = findViewById(R.id.etPassword)
-        etPassword.setText(vPassword,TextView.BufferType.EDITABLE)
+        etPassword.setText(vPassword, TextView.BufferType.EDITABLE)
     }
-
-    }
+}
