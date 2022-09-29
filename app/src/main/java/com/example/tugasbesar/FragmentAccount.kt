@@ -17,7 +17,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class FragmentAccount: Fragment(){
-    private lateinit var binding: FragmentAccountBinding
+//    private lateinit var binding: FragmentAccountBinding
     val db by lazy { UserDB(requireContext()) }
     private var userId: Int = 0
 
@@ -43,19 +43,19 @@ class FragmentAccount: Fragment(){
         }
     }
 
-    fun loadData() {
-        CoroutineScope(Dispatchers.IO).launch {
-            val notes = db.userDao()
-            Log.d("MainActivity", "dbResponse: $notes")
-        }
-    }
+//    fun loadData() {
+//        CoroutineScope(Dispatchers.IO).launch {
+//            val notes = db.userDao()
+//            Log.d("MainActivity", "dbResponse: $notes")
+//        }
+//    }
 
-    fun getNote() {
-        userId = intent.getIntExtra("intent_id", 0)
-        CoroutineScope(Dispatchers.IO).launch {
-            val notes = db.userDao().getUser(userId)[0]
-            .setText(notes.title)
-            edit_note.setText(notes.note)
-        }
-    }
+//    fun getNote() {
+//        userId = intent.getIntExtra("intent_id", 0)
+//        CoroutineScope(Dispatchers.IO).launch {
+//            val notes = db.userDao().getUser(userId)[0]
+//            .setText(notes.title)
+//            edit_note.setText(notes.note)
+//        }
+//    }
 }
