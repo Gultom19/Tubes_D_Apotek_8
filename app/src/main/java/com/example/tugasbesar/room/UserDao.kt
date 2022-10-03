@@ -24,4 +24,7 @@ interface UserDao {
 
     @Query("SELECT * FROM User WHERE password =:password")
     suspend fun getPassword(password: String) : List<User>
+
+    @Query("SELECT * FROM User WHERE username =:username AND password=:password")
+    suspend fun getAccount(username: String,password:String) : User?
 }

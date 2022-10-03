@@ -8,15 +8,20 @@ import android.content.Intent
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import com.example.tugasbesar.room.User
+import com.example.tugasbesar.room.UserDB
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import kotlinx.android.synthetic.main.fragment_account.*
+import kotlinx.coroutines.async
+import kotlinx.coroutines.runBlocking
 
 
 class MainActivity : AppCompatActivity() {
@@ -30,8 +35,9 @@ class MainActivity : AppCompatActivity() {
     lateinit var mbunlde : Bundle
     lateinit var vUsername : String
     lateinit var vPassword : String
-//    lateinit var checkUsername : String
-//    lateinit var checkPassword : String
+    val db by lazy { UserDB(this) }
+    lateinit var checkUsername : String
+    lateinit var checkPassword : String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,13 +73,38 @@ class MainActivity : AppCompatActivity() {
                 checkLogin = false
             }
 
-//            CoroutineScope(Dispatchers.IO).launch {
-//                checkUsername = db.userDao().getUsername(username)
-//                checkPassword = db.userDao().getPassword(password)
-//                userId = db.userDao().getUserId(username)
-//            }
+            runBlocking(){
+                val usernameDb = async {
+                    val Account: User? = db.userDao().getAccount(username, password)
+                    if (Account != null) {
+                        Account.username
+                    } else {
+                        null
+                    }
+                }
+                val passwordDb = async {
+                    val Account: User? = db.userDao().getAccount(username, password)
+                    Log.d("MainActivity","dbResponse: $Account")
+                    if (Account != null) {
+                        Account.password
+                    } else {
+                        null
+                    }
+                }
+                checkUsername = usernameDb.await().toString()
+                checkPassword = passwordDb.await().toString()
+            }
 
-            if (username == vUsername && password == vPassword) checkLogin = true
+            if (username == checkUsername && password == checkPassword) checkLogin = true
+
+            if(username != checkUsername) {
+                inputUsername.setError("The username you entered is incorrect")
+                checkLogin = false
+            }
+            if(password != checkPassword){
+                inputPassword.setError("The password you entered is incorrect")
+                checkLogin = false
+            }
             if (!checkLogin) return@OnClickListener
             else{
                 val moveHome = Intent(applicationContext, HomeActivity::class.java)
