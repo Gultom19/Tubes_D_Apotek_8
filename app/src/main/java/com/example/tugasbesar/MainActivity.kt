@@ -19,15 +19,13 @@ import com.example.tugasbesar.room.User
 import com.example.tugasbesar.room.UserDB
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_account.*
 import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
 
 
 class MainActivity : AppCompatActivity() {
-//    val db by lazy { UserDB(this) }
-//    private var userId: Int = 0
-
     private lateinit var inputUsername: TextInputLayout
     private lateinit var inputPassword: TextInputLayout
     private lateinit var etUsername: TextInputEditText
@@ -53,7 +51,7 @@ class MainActivity : AppCompatActivity() {
         getBundle()
         setText()
 
-        textBtnSignIn.setOnClickListener {
+        textBtnSignUp.setOnClickListener {
             val moveRegister = Intent(this@MainActivity, RegisterActivity::class.java)
             startActivity(moveRegister)
         }
@@ -113,18 +111,6 @@ class MainActivity : AppCompatActivity() {
 
         })
     }
-
-//    override fun onStart() {
-//        super.onStart()
-//        loadData()
-//    }
-//
-//    fun loadData() {
-//        CoroutineScope(Dispatchers.IO).launch {
-//            val user = db.userDao().getUser()
-//            Log.d("MainActivity", "dbResponse: $user")
-//        }
-//    }
 
     fun getBundle(){
         try{

@@ -9,10 +9,12 @@ import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
+import android.view.View
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import androidx.core.view.isEmpty
 import com.example.tugasbesar.databinding.ActivityRegisterBinding
 import com.example.tugasbesar.room.User
 import com.example.tugasbesar.room.UserDB
@@ -26,6 +28,7 @@ import kotlinx.coroutines.launch
 class RegisterActivity : AppCompatActivity() {
     private lateinit var username: TextInputLayout
     private lateinit var password: TextInputLayout
+    private lateinit var repeatPassword: TextInputLayout
     private lateinit var email: TextInputLayout
     private lateinit var tanggal: TextInputLayout
     private lateinit var telepon: TextInputLayout
@@ -44,38 +47,75 @@ class RegisterActivity : AppCompatActivity() {
         binding = ActivityRegisterBinding.inflate(layoutInflater)
         setContentView(binding?.root)
 
-
-
         setTitle("Register")
         username = binding.inputLayoutRegisUsername
         password = binding.inputLayoutRegisPassword
+        repeatPassword = binding.inputLayoutRegisRepeatPassword
         email = binding.inputLayoutEmail
         tanggal = binding.inputLayoutTanggalLahir
         telepon = binding.inputLayoutTelepon
         btnRegister = binding.btnRegister
 
         createNotificationChannel()
-        btnRegister.setOnClickListener{
-            val moveMain = Intent(this@RegisterActivity, MainActivity::class.java)
-            val mBundle = Bundle()
-            mBundle.putString("username", username.getEditText()?.getText().toString())
-            mBundle.putString("password", password.getEditText()?.getText().toString())
-            moveMain.putExtra("register", mBundle)
+        btnRegister.setOnClickListener(View.OnClickListener{
+            var checkRegister = false
 
-            CoroutineScope(Dispatchers.IO).launch {
-                db.userDao().addUser(
-                    User(
-                        0, username.getEditText()?.getText().toString(),
-                        password.getEditText()?.getText().toString(),
-                        email.getEditText()?.getText().toString(),
-                        tanggal.getEditText()?.getText().toString(),
-                        telepon.getEditText()?.getText().toString(),
-                    )
-                )
-                finish()
+            if (username.isEmpty()) {
+                username.setError("Username must be filled with text")
+                checkRegister = false
             }
-            sendNotification()
-            startActivity(moveMain)
+            if (password.isEmpty()) {
+                password.setError("Password must be filled with text")
+                checkRegister = false
+            }
+            if (repeatPassword.isEmpty()) {
+                repeatPassword.setError("Password must be filled with text")
+                checkRegister = false
+            }
+            if (email.isEmpty()) {
+                email.setError("Password must be filled with text")
+                checkRegister = false
+            }
+            if (tanggal.isEmpty()) {
+                tanggal.setError("Password must be filled with text")
+                checkRegister = false
+            }
+            if (telepon.isEmpty()) {
+                telepon.setError("Password must be filled with text")
+                checkRegister = false
+            }
+
+            if (password == repeatPassword) checkRegister = true
+
+            if (!checkRegister) return@OnClickListener
+            else{
+                val moveMain = Intent(this@RegisterActivity, MainActivity::class.java)
+                val mBundle = Bundle()
+                mBundle.putString("username", username.getEditText()?.getText().toString())
+                mBundle.putString("password", password.getEditText()?.getText().toString())
+                moveMain.putExtra("register", mBundle)
+
+                CoroutineScope(Dispatchers.IO).launch {
+                    db.userDao().addUser(
+                        User(
+                            0, username.getEditText()?.getText().toString(),
+                            password.getEditText()?.getText().toString(),
+                            email.getEditText()?.getText().toString(),
+                            tanggal.getEditText()?.getText().toString(),
+                            telepon.getEditText()?.getText().toString()
+                        )
+                    )
+                    finish()
+                }
+                sendNotification()
+                startActivity(moveMain)
+            }
+
+        })
+
+        textBtnSignIn.setOnClickListener {
+            val moveLogin = Intent(this, MainActivity::class.java)
+            startActivity(moveLogin)
         }
     }
 
