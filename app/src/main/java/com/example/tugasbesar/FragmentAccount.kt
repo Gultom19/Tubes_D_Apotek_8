@@ -37,10 +37,6 @@ class FragmentAccount: Fragment(){
             startActivity(backLogin)
         }
 
-        btnLogout.setOnClickListener(){
-            val moveProfile = Intent(getActivity(), MainActivity::class.java)
-            startActivity(moveProfile)
-        }
     }
 
 //    fun loadData() {

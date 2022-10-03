@@ -85,10 +85,10 @@ class RegisterActivity : AppCompatActivity() {
                 checkRegister = false
             }
 
-            if (password == repeatPassword) checkRegister = true
-
-            if (!checkRegister) return@OnClickListener
-            else{
+//            if (password == repeatPassword) checkRegister = true
+//
+//            if (!checkRegister) return@OnClickListener
+//            else{
                 val moveMain = Intent(this@RegisterActivity, MainActivity::class.java)
                 val mBundle = Bundle()
                 mBundle.putString("username", username.getEditText()?.getText().toString())
@@ -109,7 +109,7 @@ class RegisterActivity : AppCompatActivity() {
                 }
                 sendNotification()
                 startActivity(moveMain)
-            }
+//            }
 
         })
 
