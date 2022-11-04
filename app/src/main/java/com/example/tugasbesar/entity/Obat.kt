@@ -9,7 +9,6 @@ class Obat(var obat : String, var jenis : String, var harga : Double) {
             Obat(" Vick Formula", "Obat Batuk", 25000.12),
             Obat(" Bodrex", "Obat Demam",5000.42),
             Obat(" Betadine", "Obat Luka",5000.62),
-
         )
     }
 }

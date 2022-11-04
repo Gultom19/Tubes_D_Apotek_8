@@ -1,6 +1,8 @@
 package com.example.tugasbesar
 
 import android.accounts.Account
+import android.app.PendingIntent.getActivity
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
@@ -9,6 +11,8 @@ import android.view.MenuItem
 import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationBarView
+import kotlinx.android.synthetic.main.activity_home.*
+import kotlinx.coroutines.Dispatchers.Main
 
 class HomeActivity : AppCompatActivity() {
     lateinit var bottomNav : BottomNavigationView
@@ -16,6 +20,7 @@ class HomeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
 
+        getSupportActionBar()?.hide();
         changeFragment(FragmentObat())
 
         bottomNav = findViewById(R.id.bottom_navigation)
@@ -36,7 +41,23 @@ class HomeActivity : AppCompatActivity() {
                 else -> false
             }
         }
+
+        topAppBar.setNavigationOnClickListener {
+            // Handle navigation icon press
+        }
+
+        topAppBar.setOnMenuItemClickListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.camera -> {
+                    val moveCamera = Intent(this, CameraActivity::class.java)
+                    startActivity(moveCamera)
+                    true
+                }
+                else -> false
+            }
+        }
     }
+
 
     fun changeFragment(fragment: Fragment?){
         if(fragment != null){

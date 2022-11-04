@@ -105,7 +105,7 @@ class MainActivity : AppCompatActivity() {
             }
             if (!checkLogin) return@OnClickListener
             else{
-                val moveHome = Intent(applicationContext, HomeActivity::class.java)
+                val moveHome = Intent(this, HomeActivity::class.java)
                 startActivity(moveHome)
             }
 
