@@ -43,7 +43,7 @@ class HomeActivity : AppCompatActivity() {
         }
 
         topAppBar.setNavigationOnClickListener {
-            val moveMap = Intent(this, MapActivity::class.java)
+            val moveMap = Intent(this@HomeActivity, MapActivity::class.java)
             startActivity(moveMap)
         }
 

@@ -1,13 +1,11 @@
 package com.example.tugasbesar
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.preference.PreferenceManager
 import android.widget.Toast
-import kotlinx.android.synthetic.main.activity_home.*
+import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_map.*
-import kotlinx.android.synthetic.main.activity_map.topAppBar
 import org.json.JSONException
 import org.json.JSONObject
 import org.osmdroid.config.Configuration
