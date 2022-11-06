@@ -79,6 +79,16 @@
       },
       "name": "Apotek K24 Stan",
       "vicinity": "Jl. Raya Tajem, Denokan, Maguwoharjo, Kec. Depok, Kabupaten Sleman, Daerah Istimewa Yogyakarta 55282"
+    },
+    {
+      "geometry": {
+        "location": {
+          "lat": -7.7794331818181888818,
+          "lng": 110.41578271717171717
+        }
+      },
+      "name": "Apotek K24 Maguwo ",
+      "vicinity": "Jl. Maguwo No.43, Niten, Kenayan, Kec. Wedormatani, Kabupaten Sleman, Daerah Istimewa Yogyakarta 55284"
     }
   ],
   "status": "OK"
