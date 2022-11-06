@@ -20,7 +20,7 @@ class HomeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
 
-        getSupportActionBar()?.hide();
+        getSupportActionBar()?.hide()
         changeFragment(FragmentObat())
 
         bottomNav = findViewById(R.id.bottom_navigation)
@@ -43,7 +43,8 @@ class HomeActivity : AppCompatActivity() {
         }
 
         topAppBar.setNavigationOnClickListener {
-            // Handle navigation icon press
+            val moveMap = Intent(this, MapActivity::class.java)
+            startActivity(moveMap)
         }
 
         topAppBar.setOnMenuItemClickListener { menuItem ->
