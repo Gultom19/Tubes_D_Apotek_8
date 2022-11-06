@@ -1,0 +1,85 @@
+{
+  "results": [
+    {
+      "geometry": {
+        "location": {
+          "lat": -7.767675,
+          "lng": 110.410180
+        }
+      },
+      "name": "Apotek K24 Seturan Raya",
+      "vicinity": "Jl. Seturan Raya No.101A, Kledokan, Caturtunggal, Kec. Depok, Kabupaten Sleman, Daerah Istimewa Yogyakarta 55281"
+    },
+    {
+      "geometry": {
+        "location": {
+          "lat": -7.770438,
+          "lng": 110.390026
+        }
+      },
+      "name": "Apotek K-24 Gejayan",
+      "vicinity": "Jl. Affandi No.29, Santren, Caturtunggal, Kec. Depok, Kabupaten Sleman, Daerah Istimewa Yogyakarta 55281"
+    },
+    {
+      "geometry": {
+        "location": {
+          "lat": -7.777546570824174,
+          "lng": 110.39299907019317
+        }
+      },
+      "name": "Apotek K-24 Demangan Baru",
+      "vicinity": "Jl. Demangan Baru, Demangan Baru, Caturtunggal, Kec. Depok, Kabupaten Sleman, Daerah Istimewa Yogyakarta 55281"
+    },
+    {
+      "geometry": {
+        "location": {
+          "lat": -7.778560410423161,
+          "lng": 110.41366737759625
+        }
+      },
+      "name": "Apotek K24 Babarsari",
+      "vicinity": "Jl. Babarsari No.13 B, Janti, Caturtunggal, Kec. Depok, Kabupaten Sleman, Daerah Istimewa Yogyakarta 55281"
+    },
+    {
+      "geometry": {
+        "location": {
+          "lat": -7.750496246061092,
+          "lng": 110.41006065496694
+        }
+      },
+      "name": "Apotek K24 Condong Catur",
+      "vicinity": "Jl. Nusa Indah No.408, Dero, Condongcatur, Kec. Depok, Kabupaten Sleman, Daerah Istimewa Yogyakarta 55281"
+    },
+    {
+      "geometry": {
+        "location": {
+          "lat": -7.781638971586095,
+          "lng": 110.39707467957918
+        }
+      },
+      "name": "Apotek K24 Ambarrukmo",
+      "vicinity": "Jl. Laksda Adisucipto No.150 A, Papringan, Caturtunggal, Kec. Depok, Kabupaten Sleman, Daerah Istimewa Yogyakarta 55281"
+    },
+    {
+      "geometry": {
+        "location": {
+          "lat": -7.76922219264943,
+          "lng": 110.40176743976049
+        }
+      },
+      "name": "Apotek K24 Nologaten",
+      "vicinity": "Jl. Wahid Hasyim, Dabag, Condongcatur, Kec. Depok, Kabupaten Sleman, Daerah Istimewa Yogyakarta 55281"
+    },
+    {
+      "geometry": {
+        "location": {
+          "lat": -7.7564372049996555,
+          "lng": 110.43309801739325
+        }
+      },
+      "name": "Apotek K24 Stan",
+      "vicinity": "Jl. Raya Tajem, Denokan, Maguwoharjo, Kec. Depok, Kabupaten Sleman, Daerah Istimewa Yogyakarta 55282"
+    }
+  ],
+  "status": "OK"
+}

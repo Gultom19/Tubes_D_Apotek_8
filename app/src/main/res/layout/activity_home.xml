@@ -13,7 +13,7 @@
         app:layout_constraintBottom_toTopOf="@+id/bottom_navigation"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/topAppBar" />
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/topAppBar"
@@ -24,6 +24,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:menu="@menu/top_app_bar"
         app:navigationIcon="@drawable/ic_baseline_location_on_24"
+        app:navigationIconTint="@color/white"
         app:subtitle="Choose the Nearest Pharmacy"
         android:background="#4C7BF3" />
 
