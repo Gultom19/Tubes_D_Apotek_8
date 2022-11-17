@@ -67,4 +67,7 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_version"
     // Maps
     implementation 'org.osmdroid:osmdroid-android:6.1.11'
+
+    // Volley
+    implementation 'com.android.volley:volley:1.2.1'
 }
