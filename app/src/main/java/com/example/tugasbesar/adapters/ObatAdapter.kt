@@ -37,7 +37,7 @@ class ObatAdapter (private var obatList: List<Obat>, context: Context) :
         return filteredObatList.size
     }
 
-    fun setMahasiswaList(obatList: Array<Obat>) {
+    fun setObatList(obatList: Array<Obat>) {
         this.obatList = obatList.toList()
         filteredObatList = obatList.toMutableList()
     }
