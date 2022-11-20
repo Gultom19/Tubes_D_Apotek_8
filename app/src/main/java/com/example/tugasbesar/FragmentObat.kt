@@ -7,7 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.tugasbesar.entity.Obat
+import com.example.tugasbesar.models.Obat
+
 //aa
 class FragmentObat: Fragment() {
 
@@ -20,7 +21,7 @@ class FragmentObat: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val layoutManager = LinearLayoutManager(context)
-        val adapter : RVObatAdapter = RVObatAdapter(Obat.listOfHome)
+        val adapter : RVObatAdapter = RVObatAdapter(Obat)
 
         val rvObat : RecyclerView = view.findViewById(R.id.rv_obat)
         rvObat.layoutManager = layoutManager

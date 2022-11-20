@@ -25,6 +25,9 @@
                 android:value="" />
         </activity>
         <activity
+            android:name=".AddEditActivity"
+            android:exported="false" />
+        <activity
             android:name=".MapActivity"
             android:exported="false" />
         <activity
