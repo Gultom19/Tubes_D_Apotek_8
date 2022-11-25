@@ -3,11 +3,9 @@ package com.example.tugasbesar
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.ViewParent
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tugasbesar.entity.Obat
-import java.text.FieldPosition
 
 class RVObatAdapter(private val data: Array<Obat>) : RecyclerView.Adapter<RVObatAdapter.viewHolder>(){
 

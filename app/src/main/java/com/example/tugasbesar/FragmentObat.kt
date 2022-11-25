@@ -1,19 +1,21 @@
 package com.example.tugasbesar
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.tugasbesar.databinding.ActivityMainBinding
 import com.example.tugasbesar.entity.Promo
-import com.example.tugasbesar.entity.Promo.Companion.listOfFeed
-import com.example.tugasbesar.entity.Obat
+import com.example.tugasbesar.models.Obat
+import kotlinx.android.synthetic.main.fragment_account.*
 
 //aa
 class FragmentObat: Fragment() {
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?) : View? {
@@ -22,12 +24,10 @@ class FragmentObat: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val layoutManager = LinearLayoutManager(context)
-        val adapter : RVObatAdapter = RVObatAdapter(Obat.listOfHome)
-
-        val rvObat : RecyclerView = view.findViewById(R.id.rv_obat)
-        rvObat.layoutManager = layoutManager
-        rvObat.setHasFixedSize(true)
-        rvObat.adapter = adapter
+        val btnCategoryObat: Button = view.findViewById(R.id.btnCategoryObat)
+        btnCategoryObat.setOnClickListener(){
+            val backLogin = Intent(getActivity(), CategoryObatActivity::class.java)
+            startActivity(backLogin)
+        }
     }
 }
