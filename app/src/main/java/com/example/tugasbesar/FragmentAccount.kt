@@ -31,10 +31,16 @@ class FragmentAccount: Fragment(){
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val btnLogout: Button = view.findViewById(R.id.btnLogout)
+        val btnAbout: Button = view.findViewById(R.id.button3)
 
         btnLogout.setOnClickListener(){
             val backLogin = Intent(getActivity(), MainActivity::class.java)
             startActivity(backLogin)
+        }
+
+        btnAbout.setOnClickListener(){
+            val toAbout = Intent(getActivity(), AboutActivity::class.java)
+            startActivity(toAbout)
         }
 
     }
