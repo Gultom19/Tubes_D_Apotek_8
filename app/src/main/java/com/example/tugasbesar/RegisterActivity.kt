@@ -114,15 +114,15 @@ class RegisterActivity : AppCompatActivity() {
                 checkRegister = false
             }
 
-//            if (password == repeatPassword) checkRegister = true
+//          if (password == repeatPassword) checkRegister = true
 //
-//            if (!checkRegister) return@OnClickListener
-//            else{
-//                val moveMain = Intent(this@RegisterActivity, MainActivity::class.java)
-//                val mBundle = Bundle()
-//                mBundle.putString("username", username.getEditText()?.getText().toString())
-//                mBundle.putString("password", password.getEditText()?.getText().toString())
-//                moveMain.putExtra("register", mBundle)
+//          if (!checkRegister) return@OnClickListener
+//          else{
+                val moveMain = Intent(this@RegisterActivity, MainActivity::class.java)
+                val mBundle = Bundle()
+                mBundle.putString("username", username.getEditText()?.getText().toString())
+                mBundle.putString("password", password.getEditText()?.getText().toString())
+                moveMain.putExtra("register", mBundle)
 
 //                CoroutineScope(Dispatchers.IO).launch {
 //                    db.userDao().addUser(
@@ -138,7 +138,7 @@ class RegisterActivity : AppCompatActivity() {
 //                }
                 register()
                 sendNotification()
-//                startActivity(moveMain)
+                startActivity(moveMain)
 //            }
 
         })
@@ -165,16 +165,6 @@ class RegisterActivity : AppCompatActivity() {
 
                 if(user != null)
                     Toast.makeText(this@RegisterActivity, "Berhasil Register", Toast.LENGTH_SHORT).show()
-//                if(user.username == null)
-//                    Toast.makeText(this@RegisterActivity, "username null", Toast.LENGTH_SHORT).show()
-//                if(user.password == null)
-//                    Toast.makeText(this@RegisterActivity, "password null", Toast.LENGTH_SHORT).show()
-//                if(user.email == null)
-//                    Toast.makeText(this@RegisterActivity, "email null", Toast.LENGTH_SHORT).show()
-//                if(user.tgglLahir == null)
-//                    Toast.makeText(this@RegisterActivity, "tgglLahir null", Toast.LENGTH_SHORT).show()
-//                if(user.telepon == null)
-//                    Toast.makeText(this@RegisterActivity, "telepon null", Toast.LENGTH_SHORT).show()
 
                 val returnIntent = Intent()
                 setResult(RESULT_OK, returnIntent)

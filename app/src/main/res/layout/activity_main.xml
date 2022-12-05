@@ -140,8 +140,11 @@
             android:layout_height="wrap_content"
             android:textColor="@color/white"
             android:text="Sign Up" />
-
-
     </LinearLayout>
+
+    <include
+        android:id="@+id/layout_loading"
+        layout="@layout/layout_loading"
+        android:visibility="gone" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
