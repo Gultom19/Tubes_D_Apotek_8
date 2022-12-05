@@ -317,6 +317,7 @@ class RegisterActivityTest {
             )
         )
         appCompatButton5.perform(scrollTo(), click())
+        onView(isRoot()).perform(waitFor(3000))
     }
 
     private fun childAtPosition(
