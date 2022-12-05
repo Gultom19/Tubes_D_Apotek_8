@@ -17,6 +17,7 @@ import com.example.tugasbesar.models.Obat
 import org.json.JSONObject
 import java.nio.charset.StandardCharsets
 
+// Kelas AddEditActivity
 class AddEditActivity : AppCompatActivity() {
 //    companion object {
 //        private val Obat_LIST =
