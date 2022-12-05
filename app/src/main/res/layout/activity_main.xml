@@ -8,8 +8,6 @@
     android:background="@color/brightBlue"
     tools:context=".MainActivity">
 
-
-
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="240dp"

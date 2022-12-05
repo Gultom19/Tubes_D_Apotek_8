@@ -1,5 +1,6 @@
 package com.example.tugasbesar
 
+import android.app.DatePickerDialog
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
@@ -9,11 +10,11 @@ import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
+import android.util.Patterns
 import android.view.View
 import android.view.WindowManager
-import android.widget.Button
-import android.widget.LinearLayout
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
@@ -26,14 +27,17 @@ import com.android.volley.toolbox.Volley
 import com.example.tugasbesar.api.UserApi
 import com.example.tugasbesar.databinding.ActivityRegisterBinding
 import com.example.tugasbesar.models.User
+import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_register.*
 import org.json.JSONObject
 import java.nio.charset.StandardCharsets
+import java.text.SimpleDateFormat
+import java.util.*
 
 
-class RegisterActivity : AppCompatActivity() {
+class RegisterActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener {
     private lateinit var username: TextInputLayout
     private lateinit var password: TextInputLayout
     private lateinit var repeatPassword: TextInputLayout
@@ -45,9 +49,11 @@ class RegisterActivity : AppCompatActivity() {
 //    private var etPassword: EditText? = null
 //    private var etRepeatPassword: EditText? = null
 //    private var etEmail: EditText? = null
-//    private var etTanggal: EditText? = null
+    private var etTanggal: EditText? = null
 //    private var etTelepon: EditText? = null
 
+    private val formatter = SimpleDateFormat("dd-MM-yyyy", Locale.US)
+    private val calender = Calendar.getInstance()
     private var layoutLoading: LinearLayout? = null
     private var queue: RequestQueue? = null
 
@@ -78,7 +84,11 @@ class RegisterActivity : AppCompatActivity() {
 //        etPassword = binding.etRegisPassword
 //        etRepeatPassword = binding.etRegisRepeatPassword
 //        etEmail = binding.etEmail
-//        etTanggal = binding.etTanggalLahir
+        etTanggal = binding.etTanggalLahir
+        etTanggal!!.setFocusable(false)
+        etTanggal!!.setOnClickListener(View.OnClickListener{
+            DatePickerDialog(this, this, calender.get(Calendar.YEAR),calender.get(Calendar.MONTH),calender.get(Calendar.DAY_OF_MONTH)).show()
+        })
 //        etTelepon = binding.etTelepon
         layoutLoading = findViewById(R.id.layout_loading)
         btnRegister = binding.btnRegister
@@ -89,57 +99,57 @@ class RegisterActivity : AppCompatActivity() {
         btnRegister.setOnClickListener(View.OnClickListener{
             var checkRegister = false
 
-            if (username.isEmpty()) {
+            if (username.getEditText()?.getText().toString().isEmpty()) {
                 username.setError("Username must be filled with text")
-                checkRegister = false
+            }else{
+                username.setError(null)
             }
-            if (password.isEmpty()) {
+
+            if (password.getEditText()?.getText().toString().isEmpty()) {
                 password.setError("Password must be filled with text")
-                checkRegister = false
-            }
-            if (repeatPassword.isEmpty()) {
-                repeatPassword.setError("Password must be filled with text")
-                checkRegister = false
-            }
-            if (email.isEmpty()) {
-                email.setError("Password must be filled with text")
-                checkRegister = false
-            }
-            if (tanggal.isEmpty()) {
-                tanggal.setError("Password must be filled with text")
-                checkRegister = false
-            }
-            if (telepon.isEmpty()) {
-                telepon.setError("Password must be filled with text")
-                checkRegister = false
+            }else{
+                password.setError(null)
             }
 
-//          if (password == repeatPassword) checkRegister = true
-//
-//          if (!checkRegister) return@OnClickListener
-//          else{
-                val moveMain = Intent(this@RegisterActivity, MainActivity::class.java)
-                val mBundle = Bundle()
-                mBundle.putString("username", username.getEditText()?.getText().toString())
-                mBundle.putString("password", password.getEditText()?.getText().toString())
-                moveMain.putExtra("register", mBundle)
+            val inputRepeatPassword = repeatPassword.getEditText()?.getText().toString()
+            val inputPassword = password.getEditText()?.getText().toString()
+            if (repeatPassword.getEditText()?.getText().toString().isEmpty()) {
+                repeatPassword.setError("Repeat Password must be filled with text")
+            }else if(inputRepeatPassword != inputPassword) {
+                repeatPassword.setError("Password do not match")
+            }else{
+                repeatPassword.setError(null)
+            }
 
-//                CoroutineScope(Dispatchers.IO).launch {
-//                    db.userDao().addUser(
-//                        User(
-//                            0, username.getEditText()?.getText().toString(),
-//                            password.getEditText()?.getText().toString(),
-//                            email.getEditText()?.getText().toString(),
-//                            tanggal.getEditText()?.getText().toString(),
-//                            telepon.getEditText()?.getText().toString()
-//                        )
-//                    )
-//                    finish()
-//                }
+            val inputEmail = email.getEditText()?.getText().toString()
+            if (email.getEditText()?.getText().toString().isEmpty()) {
+                email.setError("Email must be filled with text")
+            }else if(!isValidEmail(inputEmail)){
+                email.setError("Format Email Invalid")
+            }else{
+                email.setError(null)
+            }
+
+            if (etTanggal!!.getText().isEmpty()) {
+                tanggal.setError("Tanggal Lahir must be filled with text")
+            }else{
+                tanggal.setError(null)
+            }
+
+            if (telepon.getEditText()?.getText().toString().isEmpty()) {
+                telepon.setError("Telepon must be filled with text")
+            }else{
+                telepon.setError(null)
+            }
+
+            if(username.getError() == null && password.getError() == null && repeatPassword.getError() == null && email.getError() == null && tanggal.getError() == null && telepon.getError() == null) checkRegister = true
+            if (!checkRegister) return@OnClickListener
+            else{
+
+
                 register()
-                sendNotification()
-                startActivity(moveMain)
-//            }
+
+            }
 
         })
 
@@ -147,6 +157,17 @@ class RegisterActivity : AppCompatActivity() {
             val moveLogin = Intent(this, MainActivity::class.java)
             startActivity(moveLogin)
         }
+    }
+
+    override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
+        Log.e("Calender","$year -- $month -- $dayOfMonth")
+        calender.set(year, month, dayOfMonth)
+        displayFormattedDate(calender.timeInMillis)
+    }
+
+    private fun displayFormattedDate(timestamp: Long){
+        findViewById<TextInputEditText>(R.id.etTanggalLahir).setText(formatter.format(timestamp))
+        Log.i("Formatting",timestamp.toString())
     }
 
     private fun register() {
@@ -166,9 +187,16 @@ class RegisterActivity : AppCompatActivity() {
                 if(user != null)
                     Toast.makeText(this@RegisterActivity, "Berhasil Register", Toast.LENGTH_SHORT).show()
 
-                val returnIntent = Intent()
-                setResult(RESULT_OK, returnIntent)
-                finish()
+//                val returnIntent = Intent()
+//                setResult(RESULT_OK, returnIntent)
+//                finish()
+                val moveMain = Intent(this@RegisterActivity, MainActivity::class.java)
+                val mBundle = Bundle()
+                mBundle.putString("username", username.getEditText()?.getText().toString())
+                mBundle.putString("password", password.getEditText()?.getText().toString())
+                moveMain.putExtra("register", mBundle)
+                sendNotification()
+                startActivity(moveMain)
                 setLoading(false)
             }, Response.ErrorListener { error ->
                 setLoading(false)
@@ -177,11 +205,12 @@ class RegisterActivity : AppCompatActivity() {
                     val errors = JSONObject(responseBody)
                     Toast.makeText(
                         this@RegisterActivity,
-                        errors.getString("message"),
+                        errors.getString("Email must unique"),
                         Toast.LENGTH_SHORT
                     ).show()
                 } catch (e: Exception) {
-                    Toast.makeText(this@RegisterActivity, e.message, Toast.LENGTH_SHORT).show()
+                    email.setError("Email must unique")
+//                    Toast.makeText(this@RegisterActivity, e.message, Toast.LENGTH_SHORT).show()
                 }
             }) {
                 @Throws(AuthFailureError::class)
@@ -260,5 +289,9 @@ class RegisterActivity : AppCompatActivity() {
             window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
             layoutLoading!!.visibility = View.INVISIBLE
         }
+    }
+
+    private fun isValidEmail(email: String): Boolean {
+        return Patterns.EMAIL_ADDRESS.matcher(email).matches()
     }
 }

@@ -9,6 +9,8 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isEmpty
+import androidx.databinding.adapters.TextViewBindingAdapter.setText
 import com.android.volley.AuthFailureError
 import com.android.volley.RequestQueue
 import com.android.volley.Response
@@ -25,6 +27,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import org.bouncycastle.cms.RecipientId.password
 import org.json.JSONObject
 import java.nio.charset.StandardCharsets
+import java.util.ResourceBundle.getBundle
 
 
 class MainActivity : AppCompatActivity() {
@@ -66,17 +69,18 @@ class MainActivity : AppCompatActivity() {
 
         btnLogin.setOnClickListener(View.OnClickListener {
             var checkLogin = false
-            val username: String = inputUsername.getEditText()?.getText().toString()
-            val password: String = inputPassword.getEditText()?.getText().toString()
 
-            if (username.isEmpty()) {
+
+            if (inputUsername.getEditText()?.getText().toString().isEmpty()) {
                 inputUsername.setError("Username must be filled with text")
-                checkLogin = false
+            }else{
+                inputUsername.setError(null)
             }
 
-            if (password.isEmpty()) {
+            if (inputPassword.getEditText()?.getText().toString().isEmpty()) {
                 inputPassword.setError("Password must be filled with text")
-                checkLogin = false
+            }else{
+                inputPassword.setError(null)
             }
 
 //            runBlocking(){
@@ -111,7 +115,16 @@ class MainActivity : AppCompatActivity() {
 //                inputPassword.setError("The password you entered is incorrect")
 //                checkLogin = false
 //            }
-            login()
+            if(inputUsername.getError() == null && inputPassword.getError() == null) checkLogin = true
+            if(inputUsername.getEditText()?.getText().toString() == "admin" && inputPassword.getEditText()?.getText().toString() == "admin"){
+                val moveAdmin = Intent(this@MainActivity, AdminActivity::class.java)
+                startActivity(moveAdmin)
+            }else if(!checkLogin) {
+                return@OnClickListener
+            }else{
+                login()
+            }
+
 //            if (!checkLogin) return@OnClickListener
 //            else{
 //
@@ -122,8 +135,8 @@ class MainActivity : AppCompatActivity() {
     private fun login() {
         setLoading(true)
         val user = Auth(
-            username = inputUsername.getEditText()?.getText().toString(),
-            password = inputPassword.getEditText()?.getText().toString()
+            inputUsername.getEditText()?.getText().toString(),
+            inputPassword.getEditText()?.getText().toString()
         )
         val stringRequest: StringRequest =
             object : StringRequest(Method.POST, UserApi.LOGIN, Response.Listener { response ->
@@ -142,11 +155,13 @@ class MainActivity : AppCompatActivity() {
                     val errors = JSONObject(responseBody)
                     Toast.makeText(
                         this@MainActivity,
-                        errors.getString("message"),
+                        errors.getString("Username or Password invalid"),
                         Toast.LENGTH_SHORT
                     ).show()
                 } catch (e: Exception) {
-                    Toast.makeText(this@MainActivity, e.message, Toast.LENGTH_SHORT).show()
+                    inputUsername.setError("Username or Password invalid")
+                    inputPassword.setError("Username or Password invalid")
+//                    Toast.makeText(this@MainActivity, e.message, Toast.LENGTH_SHORT).show()
                 }
             }) {
                 @Throws(AuthFailureError::class)

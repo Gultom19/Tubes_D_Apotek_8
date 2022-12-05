@@ -16,7 +16,7 @@ import com.example.tugasbesar.models.Obat
 import java.util.*
 import kotlin.collections.ArrayList
 
-class ObatAdapter (){
+//class ObatAdapter (private var mahasiswaList: List<Obat>, context: Context){
 //class ObatAdapter (private var obatList: List<Obat>, context: Context) :
 //    RecyclerView.Adapter<ObatAdapter.ViewHolder>(), Filterable {
 //
@@ -116,4 +116,4 @@ class ObatAdapter (){
 //            cvObat = itemView.findViewById(R.id.cv_obat)
 //        }
 //    }
-}
+//}
