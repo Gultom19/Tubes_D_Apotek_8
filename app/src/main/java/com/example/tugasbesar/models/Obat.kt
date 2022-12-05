@@ -1,5 +1,5 @@
 package com.example.tugasbesar.models
 
-class Obat (var jenis: String,var obat:String,var jumlah:String,var pembelian:String){
+class Obat (var obat: String, var jenis: String,var harga: String){
     var id: Long? = null
 }

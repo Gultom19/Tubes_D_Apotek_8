@@ -18,6 +18,7 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.databinding.DataBindingUtil.setContentView
 import com.example.tugasbesar.databinding.ActivityCameraBinding
 import com.example.tugasbesar.databinding.ActivityMainBinding
 import com.google.mlkit.vision.barcode.BarcodeScanner
