@@ -1,10 +1,12 @@
-package com.example.tugasbesar
+package com.example.tugasbesar.map
 
 import android.content.Intent
 import android.os.Bundle
 import android.preference.PreferenceManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.tugasbesar.R
+import com.example.tugasbesar.home.HomeActivity
 import kotlinx.android.synthetic.main.activity_map.*
 import org.json.JSONException
 import org.json.JSONObject

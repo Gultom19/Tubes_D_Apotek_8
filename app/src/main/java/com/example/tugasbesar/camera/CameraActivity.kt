@@ -1,26 +1,22 @@
-package com.example.tugasbesar
+package com.example.tugasbesar.camera
 
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.ContentValues
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.hardware.Camera
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
 import android.view.View
-import android.widget.FrameLayout
-import android.widget.ImageButton
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.databinding.DataBindingUtil.setContentView
+import com.example.tugasbesar.R
 import com.example.tugasbesar.databinding.ActivityCameraBinding
-import com.example.tugasbesar.databinding.ActivityMainBinding
 import com.google.mlkit.vision.barcode.BarcodeScanner
 import com.google.mlkit.vision.barcode.BarcodeScannerOptions
 import com.google.mlkit.vision.barcode.BarcodeScanning
@@ -68,7 +64,7 @@ class CameraActivity : AppCompatActivity(), View.OnClickListener {
                     requestCameraPermission()
                 }
             }
-            R.id.scanBtn->{
+            R.id.scanBtn ->{
                 if(imageUri == null){
                     showToast("Pick image first")
                 }else{

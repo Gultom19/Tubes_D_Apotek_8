@@ -9,25 +9,23 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.isEmpty
-import androidx.databinding.adapters.TextViewBindingAdapter.setText
 import com.android.volley.AuthFailureError
 import com.android.volley.RequestQueue
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
+import com.example.tugasbesar.admin.AdminActivity
 import com.example.tugasbesar.api.UserApi
 import com.example.tugasbesar.databinding.ActivityMainBinding
+import com.example.tugasbesar.home.HomeActivity
 import com.example.tugasbesar.models.Auth
 import com.example.tugasbesar.models.User
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_main.*
-import org.bouncycastle.cms.RecipientId.password
 import org.json.JSONObject
 import java.nio.charset.StandardCharsets
-import java.util.ResourceBundle.getBundle
 
 
 class MainActivity : AppCompatActivity() {

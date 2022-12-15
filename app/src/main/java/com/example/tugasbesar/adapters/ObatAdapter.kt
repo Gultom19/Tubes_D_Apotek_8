@@ -11,8 +11,8 @@ import android.widget.ImageButton
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.tugasbesar.AddEditActivity
-import com.example.tugasbesar.AdminActivity
+import com.example.tugasbesar.admin.AddEditActivity
+import com.example.tugasbesar.admin.AdminActivity
 import com.example.tugasbesar.MainActivity
 import com.example.tugasbesar.R
 import com.example.tugasbesar.models.Obat

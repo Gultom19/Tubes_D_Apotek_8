@@ -1,4 +1,4 @@
-package com.example.tugasbesar
+package com.example.tugasbesar.admin
 
 import android.content.Intent
 import android.os.Bundle
@@ -11,6 +11,7 @@ import com.android.volley.RequestQueue
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
+import com.example.tugasbesar.R
 import com.example.tugasbesar.api.ObatApi
 import com.example.tugasbesar.models.Obat
 import com.google.gson.Gson

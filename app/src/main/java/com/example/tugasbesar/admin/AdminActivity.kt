@@ -1,4 +1,4 @@
-package com.example.tugasbesar
+package com.example.tugasbesar.admin
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -16,7 +16,7 @@ import com.android.volley.RequestQueue
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
-import com.example.tugasbesar.AdminActivity.Companion.LAUNCH_ADD_ACTIVITY
+import com.example.tugasbesar.R
 import com.example.tugasbesar.adapters.ObatAdapter
 import com.example.tugasbesar.api.ObatApi
 import com.example.tugasbesar.models.Obat

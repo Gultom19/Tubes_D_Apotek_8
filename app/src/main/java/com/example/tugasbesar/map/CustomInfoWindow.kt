@@ -1,5 +1,6 @@
-package com.example.tugasbesar
+package com.example.tugasbesar.map
 
+import com.example.tugasbesar.R
 import kotlinx.android.synthetic.main.layout_tooltip.view.*
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.Marker

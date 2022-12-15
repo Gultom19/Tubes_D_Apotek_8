@@ -1,4 +1,4 @@
-package com.example.tugasbesar
+package com.example.tugasbesar.camera
 
 import android.content.Context
 import android.hardware.Camera

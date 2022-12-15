@@ -1,4 +1,4 @@
-package com.example.tugasbesar
+package com.example.tugasbesar.map
 
 class ModelMain {
     lateinit var strName: String

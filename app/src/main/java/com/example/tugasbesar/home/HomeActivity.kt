@@ -1,18 +1,14 @@
-package com.example.tugasbesar
+package com.example.tugasbesar.home
 
-import android.accounts.Account
-import android.app.PendingIntent.getActivity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
 import androidx.fragment.app.Fragment
+import com.example.tugasbesar.*
+import com.example.tugasbesar.camera.CameraActivity
+import com.example.tugasbesar.map.MapActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.android.material.navigation.NavigationBarView
 import kotlinx.android.synthetic.main.activity_home.*
-import kotlinx.coroutines.Dispatchers.Main
 
 class HomeActivity : AppCompatActivity() {
     lateinit var bottomNav : BottomNavigationView
