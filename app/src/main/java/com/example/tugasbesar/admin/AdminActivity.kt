@@ -120,8 +120,8 @@ class AdminActivity : AppCompatActivity() {
                 setLoading(false)
 
                 val gson = Gson()
-                var obat = gson.fromJson(response, Obat::class.java)
-                if(obat != null)
+                var mahasiswa = gson.fromJson(response, Obat::class.java)
+                if(mahasiswa != null)
                     Toast.makeText(this@AdminActivity, "Data Berhasil Dihapus", Toast.LENGTH_SHORT).show()
                 allObat()
             }, Response.ErrorListener { error ->

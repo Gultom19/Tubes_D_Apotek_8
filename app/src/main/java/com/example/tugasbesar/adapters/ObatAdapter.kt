@@ -15,6 +15,7 @@ import com.example.tugasbesar.admin.AddEditActivity
 import com.example.tugasbesar.admin.AdminActivity
 import com.example.tugasbesar.MainActivity
 import com.example.tugasbesar.R
+import com.example.tugasbesar.admin.AdminActivity.Companion.LAUNCH_ADD_ACTIVITY
 import com.example.tugasbesar.models.Obat
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import java.util.*
@@ -33,6 +34,7 @@ class ObatAdapter (private var obatList: List<Obat>, context: Context) :
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val view = inflater.inflate(R.layout.item_obat, parent, false)
+
         return ViewHolder(view)
     }
 
@@ -40,7 +42,7 @@ class ObatAdapter (private var obatList: List<Obat>, context: Context) :
         return filteredObatList.size
     }
 
-    fun setObatList(obatList: Array<Obat>) {
+    fun setObatList(obatList: Array<Obat>){
         this.obatList = obatList.toList()
         filteredObatList = obatList.toMutableList()
     }
@@ -54,7 +56,7 @@ class ObatAdapter (private var obatList: List<Obat>, context: Context) :
         holder.btnDelete.setOnClickListener {
             val materialAlertDialogBuilder = MaterialAlertDialogBuilder(context)
             materialAlertDialogBuilder.setTitle("Konfirmasi")
-                .setMessage("Apakah anda yakin ingin menghapus data mahasiswa ini?")
+                .setMessage("Apakah anda yakin ingin menghapus data obat ini?")
                 .setNegativeButton("Batal", null)
                 .setPositiveButton("Hapus") { _, _ ->
                     if (context is AdminActivity) obat.id?.let { it1 ->
@@ -68,21 +70,21 @@ class ObatAdapter (private var obatList: List<Obat>, context: Context) :
         holder.cvObat.setOnClickListener {
             val i = Intent(context, AddEditActivity::class.java)
             i.putExtra("id", obat.id)
-            if (context is MainActivity)
+            if (context is AdminActivity)
                 context.startActivityForResult(i, AdminActivity.LAUNCH_ADD_ACTIVITY)
         }
     }
 
     override fun getFilter(): Filter {
-        return object : Filter() {
+        return object : Filter(){
             override fun performFiltering(charSequence: CharSequence): FilterResults {
                 val charSequenceString = charSequence.toString()
                 val filtered: MutableList<Obat> = java.util.ArrayList()
-                if (charSequenceString.isEmpty()) {
+                if(charSequenceString.isEmpty()){
                     filtered.addAll(obatList)
-                } else {
-                    for (obat in obatList) {
-                        if (obat.jenis.lowercase(Locale.getDefault())
+                }else{
+                    for(obat in obatList){
+                        if (obat.obat.lowercase(Locale.getDefault())
                                 .contains(charSequenceString.lowercase(Locale.getDefault()))
                         ) filtered.add(obat)
                     }
