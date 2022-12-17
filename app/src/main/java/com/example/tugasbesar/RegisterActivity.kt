@@ -205,12 +205,12 @@ class RegisterActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener
                     val errors = JSONObject(responseBody)
                     Toast.makeText(
                         this@RegisterActivity,
-                        errors.getString("Email must unique"),
+                        errors.getString("message"),
                         Toast.LENGTH_SHORT
                     ).show()
                 } catch (e: Exception) {
-                    email.setError("Email must unique")
-//                    Toast.makeText(this@RegisterActivity, e.message, Toast.LENGTH_SHORT).show()
+//                 email.setError("Email must unique")
+                Toast.makeText(this@RegisterActivity, e.message, Toast.LENGTH_SHORT).show()
                 }
             }) {
                 @Throws(AuthFailureError::class)
