@@ -1,6 +1,8 @@
 package com.example.tugasbesar
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
@@ -24,6 +26,7 @@ import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_main.*
+import org.bouncycastle.cms.RecipientId.password
 import org.json.JSONObject
 import java.nio.charset.StandardCharsets
 
@@ -33,7 +36,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var inputPassword: TextInputLayout
     private lateinit var etUsername: TextInputEditText
     private lateinit var etPassword: TextInputEditText
-    lateinit var mbunlde : Bundle
+    private val myPreference = "myPref"
+    lateinit var mbundle : Bundle
     lateinit var vUsername : String
     lateinit var vPassword : String
 //    lateinit var checkUsername : String
@@ -80,39 +84,6 @@ class MainActivity : AppCompatActivity() {
             }else{
                 inputPassword.setError(null)
             }
-
-//            runBlocking(){
-//                val usernameDb = async {
-//                    val Account: User? = db.userDao().getAccount(username, password)
-//                    if (Account != null) {
-//                        Account.username
-//                    } else {
-//                        null
-//                    }
-//                }
-//                val passwordDb = async {
-//                    val Account: User? = db.userDao().getAccount(username, password)
-//                    Log.d("MainActivity","dbResponse: $Account")
-//                    if (Account != null) {
-//                        Account.password
-//                    } else {
-//                        null
-//                    }
-//                }
-//                checkUsername = usernameDb.await().toString()
-//                checkPassword = passwordDb.await().toString()
-//            }
-
-//            if (username == checkUsername && password == checkPassword) checkLogin = true
-//
-//            if(username != checkUsername) {
-//                inputUsername.setError("The username you entered is incorrect")
-//                checkLogin = false
-//            }
-//            if(password != checkPassword){
-//                inputPassword.setError("The password you entered is incorrect")
-//                checkLogin = false
-//            }
             if(inputUsername.getError() == null && inputPassword.getError() == null) checkLogin = true
             if(inputUsername.getEditText()?.getText().toString() == "admin" && inputPassword.getEditText()?.getText().toString() == "admin"){
                 val moveAdmin = Intent(this@MainActivity, AdminActivity::class.java)
@@ -143,7 +114,14 @@ class MainActivity : AppCompatActivity() {
 
                 if(user != null)
                     Toast.makeText(this@MainActivity, "Berhasil Login", Toast.LENGTH_SHORT).show()
+//                val sharedPreference =  getSharedPreferences(myPreference, Context.MODE_PRIVATE)
+//                var editor = sharedPreference.edit()
+//                editor.putString("username",user.username)
+//                editor.commit()
                 val moveHome = Intent(this@MainActivity, HomeActivity::class.java)
+                val mBundle = Bundle()
+                mBundle.putString("username", user.username)
+                moveHome.putExtra("key", mBundle)
                 startActivity(moveHome)
                 setLoading(false)
             }, Response.ErrorListener { error ->
@@ -153,13 +131,13 @@ class MainActivity : AppCompatActivity() {
                     val errors = JSONObject(responseBody)
                     Toast.makeText(
                         this@MainActivity,
-                        errors.getString("Username or Password invalid"),
+                        errors.getString("message"),
                         Toast.LENGTH_SHORT
                     ).show()
                 } catch (e: Exception) {
-                    inputUsername.setError("Username or Password invalid")
-                    inputPassword.setError("Username or Password invalid")
-//                    Toast.makeText(this@MainActivity, e.message, Toast.LENGTH_SHORT).show()
+//                    inputUsername.setError("Username or Password invalid")
+//                    inputPassword.setError("Username or Password invalid")
+                    Toast.makeText(this@MainActivity, e.message, Toast.LENGTH_SHORT).show()
                 }
             }) {
                 @Throws(AuthFailureError::class)
@@ -187,10 +165,10 @@ class MainActivity : AppCompatActivity() {
 
     fun getBundle(){
         try{
-            mbunlde = intent?.getBundleExtra("register")!!
-            if(mbunlde != null){
-                vUsername = mbunlde.getString("username")!!
-                vPassword = mbunlde.getString("password")!!
+            mbundle = intent?.getBundleExtra("register")!!
+            if(mbundle != null){
+                vUsername = mbundle.getString("username")!!
+                vPassword = mbundle.getString("password")!!
             }else{
 
             }
@@ -198,7 +176,6 @@ class MainActivity : AppCompatActivity() {
             vUsername = ""
             vPassword = ""
         }
-
     }
 
     fun setText() {

@@ -32,6 +32,7 @@ class FragmentAccount: Fragment(){
         super.onViewCreated(view, savedInstanceState)
         val btnLogout: Button = view.findViewById(R.id.btnLogout)
         val btnAbout: Button = view.findViewById(R.id.button3)
+        val btnProfile: Button = view.findViewById(R.id.button4)
 
         btnLogout.setOnClickListener(){
             val backLogin = Intent(getActivity(), MainActivity::class.java)
@@ -41,6 +42,11 @@ class FragmentAccount: Fragment(){
         btnAbout.setOnClickListener(){
             val toAbout = Intent(getActivity(), AboutActivity::class.java)
             startActivity(toAbout)
+        }
+
+        btnProfile.setOnClickListener(){
+            val toProfile = Intent(getActivity(), AboutActivity::class.java)
+            startActivity(toProfile)
         }
 
     }

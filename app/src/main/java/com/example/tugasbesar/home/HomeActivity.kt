@@ -12,13 +12,16 @@ import kotlinx.android.synthetic.main.activity_home.*
 
 class HomeActivity : AppCompatActivity() {
     lateinit var bottomNav : BottomNavigationView
+    lateinit var mbundle : Bundle
+    lateinit var vKey : String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
 
         getSupportActionBar()?.hide()
         changeFragment(FragmentObat())
-
+        mbundle = intent?.getBundleExtra("key")!!
+        vKey = mbundle.getString("username")!!
         bottomNav = findViewById(R.id.bottom_navigation)
         bottomNav.setOnNavigationItemSelectedListener {
             when (it.itemId) {
@@ -31,7 +34,11 @@ class HomeActivity : AppCompatActivity() {
                     true
                 }
                 R.id.menu_account ->{
-                    changeFragment(FragmentAccount())
+                    val bundle = Bundle()
+                    bundle.putString("key", vKey)
+                    FragmentAccount().arguments = bundle
+                    supportFragmentManager.beginTransaction().replace(R.id.layoutFragment, FragmentAccount())
+                        .commit()
                     true
                 }
                 else -> false
@@ -55,6 +62,18 @@ class HomeActivity : AppCompatActivity() {
         }
     }
 
+    fun getBundle(){
+        try{
+            mbundle = intent?.getBundleExtra("key")!!
+            if(mbundle != null){
+                vKey = mbundle.getString("username")!!
+            }else{
+
+            }
+        }catch (e: NullPointerException){
+            vKey = ""
+        }
+    }
 
     fun changeFragment(fragment: Fragment?){
         if(fragment != null){
