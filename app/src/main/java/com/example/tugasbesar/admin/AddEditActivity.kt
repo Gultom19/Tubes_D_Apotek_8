@@ -16,6 +16,8 @@ import com.example.tugasbesar.R
 import com.example.tugasbesar.api.ObatApi
 import com.example.tugasbesar.models.Obat
 import com.google.gson.Gson
+import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_register.*
 import org.json.JSONObject
 import java.nio.charset.StandardCharsets
 
@@ -59,12 +61,14 @@ class AddEditActivity : AppCompatActivity() {
         setLoading(true)
         val stringRequest: StringRequest = object :
             StringRequest(Method.GET, ObatApi.GET_BY_ID_URL + id, Response.Listener { response ->
-                val gson = Gson()
-                val obat = gson.fromJson(response, Obat::class.java)
-
-                etNama!!.setText(obat.obat)
-                etJenis!!.setText(obat.jenis)
-                etHarga!!.setText(obat.harga)
+                val jsonObject = JSONObject(response)
+                val jsonArray = jsonObject.getJSONArray("data")
+                for (i in 0 until jsonArray.length()) {
+                    val item = jsonArray.getJSONObject(i)
+                    etNama!!.setText(item.getString("obat"))
+                    etJenis!!.setText(item.getString("jenis"))
+                    etHarga!!.setText(item.getString("harga"))
+                }
 
                 Toast.makeText(this@AddEditActivity, "Data Berhasil diambil!", Toast.LENGTH_SHORT).show()
                 setLoading(false)

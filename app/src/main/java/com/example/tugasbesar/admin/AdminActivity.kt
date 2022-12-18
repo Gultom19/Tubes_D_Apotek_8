@@ -75,7 +75,9 @@ class AdminActivity : AppCompatActivity() {
         val stringRequest: StringRequest = object :
             StringRequest(Method.GET, ObatApi.GET_ALL_URL, Response.Listener { response ->
                 val gson = Gson()
-                var obat : Array<Obat> = gson.fromJson(response, Array<Obat>::class.java)
+                val jsonObject = JSONObject(response)
+                val jsonArray = jsonObject.getJSONArray("data")
+                var obat : Array<Obat> = gson.fromJson(jsonArray.toString(), Array<Obat>::class.java)
 
                 adapter!!.setObatList(obat)
                 adapter!!.filter.filter(svObat!!.query)

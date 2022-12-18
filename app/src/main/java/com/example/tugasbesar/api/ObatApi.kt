@@ -2,7 +2,7 @@ package com.example.tugasbesar.api
 
 class ObatApi {
     companion object{
-        val BASE_URL = "https://638d33edaefc455fb29e6428.mockapi.io/api/"
+        val BASE_URL = "http://192.168.1.27:8000/api/"
 
         val GET_ALL_URL = BASE_URL + "obat/"
         val GET_BY_ID_URL = BASE_URL + "obat/"
