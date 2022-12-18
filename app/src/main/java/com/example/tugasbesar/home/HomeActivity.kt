@@ -3,6 +3,7 @@ package com.example.tugasbesar.home
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import com.example.tugasbesar.*
 import com.example.tugasbesar.camera.CameraActivity
@@ -20,9 +21,11 @@ class HomeActivity : AppCompatActivity() {
 
         getSupportActionBar()?.hide()
         changeFragment(FragmentObat())
+        getBundle()
 //        mbundle = intent?.getBundleExtra("key")!!
 //        vKey = mbundle.getString("username")!!
         bottomNav = findViewById(R.id.bottom_navigation)
+        Log.d("key",vKey)
         bottomNav.setOnNavigationItemSelectedListener {
             when (it.itemId) {
                 R.id.menu_home -> {
@@ -34,28 +37,15 @@ class HomeActivity : AppCompatActivity() {
                     true
                 }
                 R.id.menu_account ->{
-//                    val bundle = Bundle()
-//                    bundle.putString("key", vKey)
-//                    FragmentAccount().arguments = bundle
-//                    supportFragmentManager.beginTransaction().replace(R.id.layoutFragment, FragmentAccount())
-//                        .commit()
+//                    val mBundle = Bundle()
+//                    mBundle.putString("username", inputUsername.getEditText()?.getText().toString())
+//                    moveHome.putExtra("key", mBundle)
+//                    val mBundle = Bundle()
+//                    mBundle.putString("key", vKey); Log.d("tes2", vKey)
+//                    FragmentAccount().arguments = mBundle
+                    supportFragmentManager.beginTransaction().replace(R.id.layoutFragment, FragmentAccount())
+                        .commit()
                     changeFragment(FragmentAccount())
-                    true
-                }
-                else -> false
-            }
-        }
-
-        topAppBar.setNavigationOnClickListener {
-            val moveMap = Intent(this@HomeActivity, MapActivity::class.java)
-            startActivity(moveMap)
-        }
-
-        topAppBar.setOnMenuItemClickListener { menuItem ->
-            when (menuItem.itemId) {
-                R.id.camera -> {
-                    val moveCamera = Intent(this, CameraActivity::class.java)
-                    startActivity(moveCamera)
                     true
                 }
                 else -> false

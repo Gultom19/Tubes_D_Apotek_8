@@ -5,7 +5,6 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Environment
 import android.view.View
@@ -14,6 +13,7 @@ import android.widget.LinearLayout
 import android.widget.SearchView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -23,14 +23,14 @@ import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.example.tugasbesar.adapters.CategoryObatAdapter
-import com.example.tugasbesar.adapters.ObatAdapter
-import com.example.tugasbesar.admin.AddEditActivity
 import com.example.tugasbesar.admin.AdminActivity
 import com.example.tugasbesar.api.ObatApi
+import com.example.tugasbesar.api.TransaksiApi
+import com.example.tugasbesar.camera.CameraActivity
 import com.example.tugasbesar.databinding.ActivityCategoryObatBinding
-import com.example.tugasbesar.databinding.ActivityMainBinding
+import com.example.tugasbesar.home.HomeActivity
+import com.example.tugasbesar.map.MapActivity
 import com.example.tugasbesar.models.Obat
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.gson.Gson
 import com.itextpdf.barcodes.BarcodeQRCode
 import com.itextpdf.io.image.ImageDataFactory
@@ -44,6 +44,7 @@ import com.itextpdf.layout.element.Paragraph
 import com.itextpdf.layout.element.Table
 import com.itextpdf.layout.property.HorizontalAlignment
 import com.itextpdf.layout.property.TextAlignment
+import kotlinx.android.synthetic.main.activity_home.*
 import org.json.JSONObject
 import java.io.ByteArrayOutputStream
 import java.io.File
@@ -55,7 +56,6 @@ import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 
 class CategoryObatActivity : AppCompatActivity() {
-    private var binding: ActivityCategoryObatBinding? = null
     private var srObat: SwipeRefreshLayout? = null
     private var adapter: CategoryObatAdapter? = null
     private var svObat: SearchView? = null
@@ -71,12 +71,13 @@ class CategoryObatActivity : AppCompatActivity() {
 //        binding = ActivityCategoryObatBinding.inflate(layoutInflater)
 //        val view: View = binding!!.root
 //        setContentView(view)
-        setContentView(R.layout.activity_admin)
+        setContentView(R.layout.activity_category_obat)
+        getSupportActionBar()?.hide()
 
         queue = Volley.newRequestQueue(this)
         layoutLoading = findViewById(R.id.layout_loading)
-        srObat = findViewById(R.id.sr_obat)
-        svObat = findViewById(R.id.sv_obat)
+        srObat = findViewById(R.id.sr_categoryObat)
+        svObat = findViewById(R.id.sv_categoryObat)
 
         srObat?.setOnRefreshListener(SwipeRefreshLayout.OnRefreshListener { allObat() })
         svObat?.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
@@ -90,32 +91,27 @@ class CategoryObatActivity : AppCompatActivity() {
             }
         })
 
-        val fabAdd = findViewById<FloatingActionButton>(R.id.fab_add)
-        fabAdd.setVisibility(View.INVISIBLE);
-
-        val rvProduk = findViewById<RecyclerView>(R.id.rv_obat)
+        val rvProduk = findViewById<RecyclerView>(R.id.rv_categoryObat)
         adapter = CategoryObatAdapter(ArrayList(), this)
         rvProduk.layoutManager = LinearLayoutManager(this)
         rvProduk.adapter = adapter
         allObat()
 
-//        binding!!.buttonSave.setOnClickListener {
-//            val obat = binding!!.editTextObat.text.toString()
-//            val jenis = binding!!.editTextJenis.text.toString()
-//            val harga = binding!!.editTextHarga.text.toString()
-//
-//            try {
-//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
-//                    if(obat.isEmpty() && jenis.isEmpty() && harga.isEmpty()){
-//                        Toast.makeText(applicationContext, "Semuanya Tidak boleh Kosong", Toast.LENGTH_SHORT).show()
-//                    } else {
-//                        createPDF(obat, jenis, harga)
-//                    }
-//                }
-//            } catch (e: FileNotFoundException){
-//                e.printStackTrace()
-//            }
-//        }
+        topAppBar.setNavigationOnClickListener {
+            val back = Intent(this@CategoryObatActivity, HomeActivity::class.java)
+            startActivity(back)
+        }
+
+        topAppBar.setOnMenuItemClickListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.shopping -> {
+                    val moveShopping = Intent(this@CategoryObatActivity, TransaksiActivity::class.java)
+                    startActivity(moveShopping)
+                    true
+                }
+                else -> false
+            }
+        }
     }
 
     private fun allObat() {
@@ -123,7 +119,9 @@ class CategoryObatActivity : AppCompatActivity() {
         val stringRequest: StringRequest = object :
             StringRequest(Method.GET, ObatApi.GET_ALL_URL, Response.Listener { response ->
                 val gson = Gson()
-                var obat : Array<Obat> = gson.fromJson(response, Array<Obat>::class.java)
+                val jsonObject = JSONObject(response)
+                val jsonArray = jsonObject.getJSONArray("data")
+                var obat : Array<Obat> = gson.fromJson(jsonArray.toString(), Array<Obat>::class.java)
 
                 adapter!!.setObatList(obat)
                 adapter!!.filter.filter(svObat!!.query)
@@ -158,6 +156,60 @@ class CategoryObatActivity : AppCompatActivity() {
                 return headers
             }
         }
+        queue!!.add(stringRequest)
+    }
+
+    fun create(obat: String, jenis: String, harga: String) {
+        // Fungsi untuk menambah data mahasiswa.
+        setLoading(true)
+
+        val obat = Obat(
+            obat,
+            jenis,
+            harga
+        )
+        val stringRequest: StringRequest =
+            object : StringRequest(Method.POST, TransaksiApi.ADD_URL, Response.Listener { response ->
+                val gson = Gson()
+                var obat = gson.fromJson(response, Obat::class.java)
+
+                if(obat != null)
+                    Toast.makeText(this@CategoryObatActivity, "Data Berhasil Ditambahkan", Toast.LENGTH_SHORT).show()
+
+                setLoading(false)
+            }, Response.ErrorListener { error ->
+                setLoading(false)
+                try {
+                    val responseBody = String(error.networkResponse.data, StandardCharsets.UTF_8)
+                    val errors = JSONObject(responseBody)
+                    Toast.makeText(
+                        this@CategoryObatActivity,
+                        errors.getString("message"),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                } catch (e: Exception) {
+                    Toast.makeText(this@CategoryObatActivity, e.message, Toast.LENGTH_SHORT).show()
+                }
+            }) {
+                @Throws(AuthFailureError::class)
+                override fun getHeaders(): Map<String, String> {
+                    val headers = HashMap<String, String>()
+                    headers["Accept"] = "application/json"
+                    return headers
+                }
+
+                @Throws(AuthFailureError::class)
+                override fun getBody(): ByteArray {
+                    val gson = Gson()
+                    val requestBody = gson.toJson(obat)
+                    return requestBody.toByteArray(StandardCharsets.UTF_8)
+                }
+
+                override fun getBodyContentType(): String {
+                    return "application/json"
+                }
+            }
+        // Menambahkan request ke request queue
         queue!!.add(stringRequest)
     }
 

@@ -5,19 +5,19 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.Filter
 import android.widget.Filterable
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.tugasbesar.R
 import com.example.tugasbesar.admin.AddEditActivity
 import com.example.tugasbesar.admin.AdminActivity
-import com.example.tugasbesar.MainActivity
-import com.example.tugasbesar.R
-import com.example.tugasbesar.admin.AdminActivity.Companion.LAUNCH_ADD_ACTIVITY
 import com.example.tugasbesar.models.Obat
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.textfield.TextInputEditText
 import java.util.*
 
 class ObatAdapter (private var obatList: List<Obat>, context: Context) :
@@ -53,6 +53,7 @@ class ObatAdapter (private var obatList: List<Obat>, context: Context) :
         holder.tvJenis.text = obat.jenis
         holder.tvHarga.text = obat.harga
         holder.btnAdd.setVisibility(View.INVISIBLE);
+        holder.btnRemove.setVisibility(View.INVISIBLE);
 
         holder.btnDelete.setOnClickListener {
             val materialAlertDialogBuilder = MaterialAlertDialogBuilder(context)
@@ -109,6 +110,7 @@ class ObatAdapter (private var obatList: List<Obat>, context: Context) :
         var tvHarga: TextView
         var btnDelete: ImageButton
         var btnAdd: ImageButton
+        var btnRemove: ImageButton
         var cvObat: CardView
 
         init {
@@ -116,7 +118,8 @@ class ObatAdapter (private var obatList: List<Obat>, context: Context) :
             tvJenis = itemView.findViewById(R.id.tv_jenis)
             tvHarga = itemView.findViewById(R.id.tv_harga)
             btnDelete = itemView.findViewById(R.id.btn_delete)
-            btnAdd = itemView.findViewById(R.id.btn_Add)
+            btnAdd = itemView.findViewById(R.id.btn_addShopping)
+            btnRemove = itemView.findViewById(R.id.btn_removeShopping)
             cvObat = itemView.findViewById(R.id.cv_obat)
         }
     }

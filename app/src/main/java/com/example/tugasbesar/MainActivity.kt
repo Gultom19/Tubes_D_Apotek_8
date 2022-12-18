@@ -120,7 +120,7 @@ class MainActivity : AppCompatActivity() {
 //                editor.commit()
                 val moveHome = Intent(this@MainActivity, HomeActivity::class.java)
                 val mBundle = Bundle()
-                mBundle.putString("username", user.username)
+                mBundle.putString("username", inputUsername.getEditText()?.getText().toString())
                 moveHome.putExtra("key", mBundle)
                 startActivity(moveHome)
                 setLoading(false)

@@ -11,21 +11,21 @@ import android.widget.ImageButton
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.tugasbesar.CategoryObatActivity
 import com.example.tugasbesar.R
+import com.example.tugasbesar.TransaksiActivity
 import com.example.tugasbesar.admin.AddEditActivity
 import com.example.tugasbesar.admin.AdminActivity
 import com.example.tugasbesar.models.Obat
 import java.util.*
 
-class CategoryObatAdapter(private var categoryObatList: List<Obat>, context: Context) :
-RecyclerView.Adapter<CategoryObatAdapter.ViewHolder>(), Filterable {
+class TransaksiAdapter (private var transaksiList: List<Obat>, context: Context) :
+    RecyclerView.Adapter<TransaksiAdapter.ViewHolder>(), Filterable {
 
-    private var filteredCategoryObatList: MutableList<Obat>
+    private var filteredTransaksiList: MutableList<Obat>
     private val context: Context
 
     init {
-        filteredCategoryObatList = ArrayList(categoryObatList)
+        filteredTransaksiList = ArrayList(transaksiList)
         this.context = context
     }
 
@@ -37,28 +37,40 @@ RecyclerView.Adapter<CategoryObatAdapter.ViewHolder>(), Filterable {
     }
 
     override fun getItemCount(): Int {
-        return filteredCategoryObatList.size
+        return filteredTransaksiList.size
     }
 
-    fun setObatList(obatList: Array<Obat>){
-        this.categoryObatList = obatList.toList()
-        filteredCategoryObatList = obatList.toMutableList()
+    fun setTransaksiList(transaksiList: Array<Obat>){
+        this.transaksiList = transaksiList.toList()
+        filteredTransaksiList = transaksiList.toMutableList()
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val obat = filteredCategoryObatList[position]
-        holder.tvObat.text = obat.obat
-        holder.tvJenis.text = obat.jenis
-        holder.tvHarga.text = obat.harga
+        val transaksi = filteredTransaksiList[position]
+        holder.tvTransaksi.text = transaksi.obat
+        holder.tvJenis.text = transaksi.jenis
+        holder.tvHarga.text = transaksi.harga
         holder.btnDelete.setVisibility(View.INVISIBLE);
-        holder.btnRemove.setVisibility(View.INVISIBLE);
+        holder.btnAdd.setVisibility(View.INVISIBLE);
 
-        holder.btnAdd.setOnClickListener {
-            if (context is CategoryObatActivity) obat.id?.let { it1 ->
-                context.create(
-                    holder.tvObat.text.toString(),
-                    holder.tvJenis.text.toString(),
-                    holder.tvHarga.text.toString()
+//        holder.btnDelete.setOnClickListener {
+//            val materialAlertDialogBuilder = MaterialAlertDialogBuilder(context)
+//            materialAlertDialogBuilder.setTitle("Konfirmasi")
+//                .setMessage("Apakah anda yakin ingin menghapus data produk ini?")
+//                .setNegativeButton("Batal", null)
+//                .setPositiveButton("Hapus") { _, _ ->
+//                    if (context is AdminActivity) transaksi.id?.let { it1 ->
+//                        context.deleteTransaksi(
+//                            it1
+//                        )
+//                    }
+//                }
+//                .show()
+//        }
+        holder.btnRemove.setOnClickListener {
+            if (context is TransaksiActivity) transaksi.id?.let { it1 ->
+                context.delete(
+                    it1
                 )
             }
         }
@@ -70,12 +82,12 @@ RecyclerView.Adapter<CategoryObatAdapter.ViewHolder>(), Filterable {
                 val charSequenceString = charSequence.toString()
                 val filtered: MutableList<Obat> = java.util.ArrayList()
                 if(charSequenceString.isEmpty()){
-                    filtered.addAll(categoryObatList)
+                    filtered.addAll(transaksiList)
                 }else{
-                    for(obat in categoryObatList){
-                        if (obat.obat.lowercase(Locale.getDefault())
+                    for(transaksi in transaksiList){
+                        if (transaksi.obat.lowercase(Locale.getDefault())
                                 .contains(charSequenceString.lowercase(Locale.getDefault()))
-                        ) filtered.add(obat)
+                        ) filtered.add(transaksi)
                     }
                 }
                 val filterResults = FilterResults()
@@ -84,30 +96,30 @@ RecyclerView.Adapter<CategoryObatAdapter.ViewHolder>(), Filterable {
             }
 
             override fun publishResults(charSequence: CharSequence, filterResults: FilterResults) {
-                filteredCategoryObatList.clear()
-                filteredCategoryObatList.addAll((filterResults.values as List<Obat>))
+                filteredTransaksiList.clear()
+                filteredTransaksiList.addAll((filterResults.values as List<Obat>))
                 notifyDataSetChanged()
             }
         }
     }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var tvObat: TextView
+        var tvTransaksi: TextView
         var tvJenis: TextView
         var tvHarga: TextView
         var btnDelete: ImageButton
         var btnAdd: ImageButton
         var btnRemove: ImageButton
-        var cvObat: CardView
+        var cvTransaksi: CardView
 
         init {
-            tvObat = itemView.findViewById(R.id.tv_nama)
+            tvTransaksi = itemView.findViewById(R.id.tv_nama)
             tvJenis = itemView.findViewById(R.id.tv_jenis)
             tvHarga = itemView.findViewById(R.id.tv_harga)
             btnDelete = itemView.findViewById(R.id.btn_delete)
             btnAdd = itemView.findViewById(R.id.btn_addShopping)
             btnRemove = itemView.findViewById(R.id.btn_removeShopping)
-            cvObat = itemView.findViewById(R.id.cv_obat)
+            cvTransaksi = itemView.findViewById(R.id.cv_obat)
         }
     }
 }

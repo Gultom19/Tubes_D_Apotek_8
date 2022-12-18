@@ -32,6 +32,7 @@ class AddEditActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_edit)
+        getSupportActionBar()?.hide()
 
         // Pendeklarasian request queue
         queue = Volley.newRequestQueue(this)

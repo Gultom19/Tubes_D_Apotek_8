@@ -25,7 +25,11 @@ class FragmentAccount: Fragment(){
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return  inflater.inflate(R.layout.fragment_account, container, false)
+        val view = inflater.inflate(R.layout.fragment_account, container, false)
+//        val data = arguments
+//        val text = data!!.getString("key").toString()
+//        Log.d("key",text)
+        return  view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
