@@ -1,6 +1,7 @@
 package com.example.tugasbesar
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.os.Build
@@ -8,10 +9,29 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Environment
 import android.view.View
+import android.view.WindowManager
+import android.widget.LinearLayout
+import android.widget.SearchView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.android.volley.AuthFailureError
+import com.android.volley.RequestQueue
+import com.android.volley.Response
+import com.android.volley.toolbox.StringRequest
+import com.android.volley.toolbox.Volley
+import com.example.tugasbesar.adapters.CategoryObatAdapter
+import com.example.tugasbesar.adapters.ObatAdapter
+import com.example.tugasbesar.admin.AddEditActivity
+import com.example.tugasbesar.admin.AdminActivity
+import com.example.tugasbesar.api.ObatApi
 import com.example.tugasbesar.databinding.ActivityCategoryObatBinding
 import com.example.tugasbesar.databinding.ActivityMainBinding
+import com.example.tugasbesar.models.Obat
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.gson.Gson
 import com.itextpdf.barcodes.BarcodeQRCode
 import com.itextpdf.io.image.ImageDataFactory
 import com.itextpdf.kernel.colors.ColorConstants
@@ -24,39 +44,139 @@ import com.itextpdf.layout.element.Paragraph
 import com.itextpdf.layout.element.Table
 import com.itextpdf.layout.property.HorizontalAlignment
 import com.itextpdf.layout.property.TextAlignment
+import org.json.JSONObject
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileNotFoundException
 import java.io.FileOutputStream
+import java.nio.charset.StandardCharsets
 import java.time.LocalDate
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 
 class CategoryObatActivity : AppCompatActivity() {
     private var binding: ActivityCategoryObatBinding? = null
+    private var srObat: SwipeRefreshLayout? = null
+    private var adapter: CategoryObatAdapter? = null
+    private var svObat: SearchView? = null
+    private var layoutLoading: LinearLayout? = null
+    private var queue: RequestQueue? = null
+
+    companion object {
+        const val LAUNCH_ADD_ACTIVITY = 123
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityCategoryObatBinding.inflate(layoutInflater)
-        val view: View = binding!!.root
-        setContentView(view)
+//        binding = ActivityCategoryObatBinding.inflate(layoutInflater)
+//        val view: View = binding!!.root
+//        setContentView(view)
+        setContentView(R.layout.activity_admin)
 
-        binding!!.buttonSave.setOnClickListener {
-            val obat = binding!!.editTextObat.text.toString()
-            val jenis = binding!!.editTextJenis.text.toString()
-            val harga = binding!!.editTextHarga.text.toString()
+        queue = Volley.newRequestQueue(this)
+        layoutLoading = findViewById(R.id.layout_loading)
+        srObat = findViewById(R.id.sr_obat)
+        svObat = findViewById(R.id.sv_obat)
 
-            try {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
-                    if(obat.isEmpty() && jenis.isEmpty() && harga.isEmpty()){
-                        Toast.makeText(applicationContext, "Semuanya Tidak boleh Kosong", Toast.LENGTH_SHORT).show()
-                    } else {
-                        createPDF(obat, jenis, harga)
-                    }
-                }
-            } catch (e: FileNotFoundException){
-                e.printStackTrace()
+        srObat?.setOnRefreshListener(SwipeRefreshLayout.OnRefreshListener { allObat() })
+        svObat?.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(s: String): Boolean {
+                return false
             }
+
+            override fun onQueryTextChange(s: String): Boolean {
+                adapter!!.filter.filter(s)
+                return false
+            }
+        })
+
+        val fabAdd = findViewById<FloatingActionButton>(R.id.fab_add)
+        fabAdd.setVisibility(View.INVISIBLE);
+
+        val rvProduk = findViewById<RecyclerView>(R.id.rv_obat)
+        adapter = CategoryObatAdapter(ArrayList(), this)
+        rvProduk.layoutManager = LinearLayoutManager(this)
+        rvProduk.adapter = adapter
+        allObat()
+
+//        binding!!.buttonSave.setOnClickListener {
+//            val obat = binding!!.editTextObat.text.toString()
+//            val jenis = binding!!.editTextJenis.text.toString()
+//            val harga = binding!!.editTextHarga.text.toString()
+//
+//            try {
+//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+//                    if(obat.isEmpty() && jenis.isEmpty() && harga.isEmpty()){
+//                        Toast.makeText(applicationContext, "Semuanya Tidak boleh Kosong", Toast.LENGTH_SHORT).show()
+//                    } else {
+//                        createPDF(obat, jenis, harga)
+//                    }
+//                }
+//            } catch (e: FileNotFoundException){
+//                e.printStackTrace()
+//            }
+//        }
+    }
+
+    private fun allObat() {
+        srObat!!.isRefreshing = true
+        val stringRequest: StringRequest = object :
+            StringRequest(Method.GET, ObatApi.GET_ALL_URL, Response.Listener { response ->
+                val gson = Gson()
+                var obat : Array<Obat> = gson.fromJson(response, Array<Obat>::class.java)
+
+                adapter!!.setObatList(obat)
+                adapter!!.filter.filter(svObat!!.query)
+                srObat!!.isRefreshing = false
+
+                if(!obat.isEmpty())
+                    Toast.makeText(this@CategoryObatActivity, "Data Berhasil Diambil!", Toast.LENGTH_SHORT)
+                        .show()
+                else
+                    Toast.makeText(this@CategoryObatActivity, "Data Kosong!", Toast.LENGTH_SHORT)
+                        .show()
+            }, Response.ErrorListener { error ->
+                srObat!!.isRefreshing = false
+                try {
+                    val responseBody =
+                        String(error.networkResponse.data, StandardCharsets.UTF_8)
+                    val errors = JSONObject(responseBody)
+                    Toast.makeText(
+                        this@CategoryObatActivity,
+                        errors.getString("message"),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                } catch (e: Exception) {
+                    Toast.makeText(this@CategoryObatActivity, e.message, Toast.LENGTH_SHORT).show()
+                }
+            }) {
+            // Menambahkan header pada request
+            @Throws(AuthFailureError::class)
+            override fun getHeaders(): Map<String, String> {
+                val headers = HashMap<String, String>()
+                headers["Accept"] = "application/json"
+                return headers
+            }
+        }
+        queue!!.add(stringRequest)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == AdminActivity.LAUNCH_ADD_ACTIVITY && resultCode == RESULT_OK) allObat()
+    }
+
+    // Fungsi ini digunakan menampilkan layout loading
+    private fun setLoading(isLoading: Boolean) {
+        if (isLoading) {
+            window.setFlags(
+                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
+            )
+            layoutLoading!!.visibility = View.VISIBLE
+        } else {
+            window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+            layoutLoading!!.visibility = View.GONE
         }
     }
 

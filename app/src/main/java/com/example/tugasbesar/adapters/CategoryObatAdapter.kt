@@ -11,17 +11,15 @@ import android.widget.ImageButton
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.tugasbesar.R
 import com.example.tugasbesar.admin.AddEditActivity
 import com.example.tugasbesar.admin.AdminActivity
-import com.example.tugasbesar.MainActivity
-import com.example.tugasbesar.R
-import com.example.tugasbesar.admin.AdminActivity.Companion.LAUNCH_ADD_ACTIVITY
 import com.example.tugasbesar.models.Obat
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import java.util.*
 
-class ObatAdapter (private var obatList: List<Obat>, context: Context) :
-    RecyclerView.Adapter<ObatAdapter.ViewHolder>(), Filterable {
+class CategoryObatAdapter(private var obatList: List<Obat>, context: Context) :
+RecyclerView.Adapter<CategoryObatAdapter.ViewHolder>(), Filterable {
 
     private var filteredObatList: MutableList<Obat>
     private val context: Context
@@ -52,22 +50,22 @@ class ObatAdapter (private var obatList: List<Obat>, context: Context) :
         holder.tvObat.text = obat.obat
         holder.tvJenis.text = obat.jenis
         holder.tvHarga.text = obat.harga
-        holder.btnAdd.setVisibility(View.INVISIBLE);
+        holder.btnDelete.setVisibility(View.INVISIBLE);
 
-        holder.btnDelete.setOnClickListener {
-            val materialAlertDialogBuilder = MaterialAlertDialogBuilder(context)
-            materialAlertDialogBuilder.setTitle("Konfirmasi")
-                .setMessage("Apakah anda yakin ingin menghapus data produk ini?")
-                .setNegativeButton("Batal", null)
-                .setPositiveButton("Hapus") { _, _ ->
-                    if (context is AdminActivity) obat.id?.let { it1 ->
-                        context.deleteObat(
-                            it1
-                        )
-                    }
-                }
-                .show()
-        }
+//        holder.btnDelete.setOnClickListener {
+//            val materialAlertDialogBuilder = MaterialAlertDialogBuilder(context)
+//            materialAlertDialogBuilder.setTitle("Konfirmasi")
+//                .setMessage("Apakah anda yakin ingin menghapus data produk ini?")
+//                .setNegativeButton("Batal", null)
+//                .setPositiveButton("Hapus") { _, _ ->
+//                    if (context is AdminActivity) obat.id?.let { it1 ->
+//                        context.deleteObat(
+//                            it1
+//                        )
+//                    }
+//                }
+//                .show()
+//        }
         holder.cvObat.setOnClickListener {
             val i = Intent(context, AddEditActivity::class.java)
             i.putExtra("id", obat.id)

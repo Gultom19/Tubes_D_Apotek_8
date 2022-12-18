@@ -66,6 +66,14 @@
                     android:src="@drawable/ic_baseline_delete_forever_24"
                     app:tint="#DC3939" />
 
+                <ImageButton
+                    android:id="@+id/btn_Add"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:src="@drawable/ic_baseline_add_24"
+                    app:tint="#7CFC00"/>
+
             </LinearLayout>
 
         </LinearLayout>

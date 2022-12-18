@@ -26,8 +26,8 @@ class FragmentObat: Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val btnCategoryObat: Button = view.findViewById(R.id.btnCategoryObat)
         btnCategoryObat.setOnClickListener(){
-            val backLogin = Intent(getActivity(), CategoryObatActivity::class.java)
-            startActivity(backLogin)
+            val toCategoryObat = Intent(getActivity(), CategoryObatActivity::class.java)
+            startActivity(toCategoryObat)
         }
     }
 }

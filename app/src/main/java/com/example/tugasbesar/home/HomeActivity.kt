@@ -20,8 +20,8 @@ class HomeActivity : AppCompatActivity() {
 
         getSupportActionBar()?.hide()
         changeFragment(FragmentObat())
-        mbundle = intent?.getBundleExtra("key")!!
-        vKey = mbundle.getString("username")!!
+//        mbundle = intent?.getBundleExtra("key")!!
+//        vKey = mbundle.getString("username")!!
         bottomNav = findViewById(R.id.bottom_navigation)
         bottomNav.setOnNavigationItemSelectedListener {
             when (it.itemId) {
@@ -34,11 +34,12 @@ class HomeActivity : AppCompatActivity() {
                     true
                 }
                 R.id.menu_account ->{
-                    val bundle = Bundle()
-                    bundle.putString("key", vKey)
-                    FragmentAccount().arguments = bundle
-                    supportFragmentManager.beginTransaction().replace(R.id.layoutFragment, FragmentAccount())
-                        .commit()
+//                    val bundle = Bundle()
+//                    bundle.putString("key", vKey)
+//                    FragmentAccount().arguments = bundle
+//                    supportFragmentManager.beginTransaction().replace(R.id.layoutFragment, FragmentAccount())
+//                        .commit()
+                    changeFragment(FragmentAccount())
                     true
                 }
                 else -> false
