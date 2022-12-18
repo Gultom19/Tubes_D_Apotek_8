@@ -102,5 +102,7 @@ dependencies {
     // Optional -- UI testing with UI Automator
     androidTestImplementation 'androidx.test.uiautomator:uiautomator:2.2.0'
 
-    // Fitur Geolocation yang lain
+    //email verification
+    implementation 'com.sun.mail:android-mail:1.6.0'
+    implementation 'com.sun.mail:android-activation:1.6.0'
 }

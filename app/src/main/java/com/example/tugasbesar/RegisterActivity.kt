@@ -29,12 +29,23 @@ import com.example.tugasbesar.databinding.ActivityRegisterBinding
 import com.example.tugasbesar.models.User
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
+import com.google.firebase.messaging.reporting.MessagingClientEvent.getDefaultInstance
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_register.*
+import org.bouncycastle.asn1.iana.IANAObjectIdentifiers.mail
 import org.json.JSONObject
+import org.osmdroid.tileprovider.tilesource.bing.ImageryMetaDataResource.getDefaultInstance
 import java.nio.charset.StandardCharsets
 import java.text.SimpleDateFormat
 import java.util.*
+import javax.mail.Message
+import javax.mail.MessagingException
+import javax.mail.PasswordAuthentication
+import javax.mail.Session
+import javax.mail.Transport
+import javax.mail.internet.InternetAddress
+import javax.mail.internet.MimeMessage
+import android.os.StrictMode
 
 
 class RegisterActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener {
@@ -42,14 +53,18 @@ class RegisterActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener
     private lateinit var password: TextInputLayout
     private lateinit var repeatPassword: TextInputLayout
     private lateinit var email: TextInputLayout
+    private lateinit var otp: TextInputLayout
     private lateinit var tanggal: TextInputLayout
     private lateinit var telepon: TextInputLayout
+    private lateinit var btnSendEmail: ImageButton
 
 //    private var etUsername: EditText? = null
 //    private var etPassword: EditText? = null
 //    private var etRepeatPassword: EditText? = null
 //    private var etEmail: EditText? = null
     private var etTanggal: EditText? = null
+
+    private var key: String? = null
 //    private var etTelepon: EditText? = null
 
     private val formatter = SimpleDateFormat("dd-MM-yyyy", Locale.US)
@@ -77,6 +92,7 @@ class RegisterActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener
         password = binding.inputLayoutRegisPassword
         repeatPassword = binding.inputLayoutRegisRepeatPassword
         email = binding.inputLayoutEmail
+        otp = binding.inputLayoutOTP
         tanggal = binding.inputLayoutTanggalLahir
         telepon = binding.inputLayoutTelepon
 
@@ -92,9 +108,13 @@ class RegisterActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener
 //        etTelepon = binding.etTelepon
         layoutLoading = findViewById(R.id.layout_loading)
         btnRegister = binding.btnRegister
+        btnSendEmail = binding.btnSendEmail
 
         queue = Volley.newRequestQueue(this)
 
+        btnSendEmail.setOnClickListener(View.OnClickListener {
+            sendEmail()
+        })
         createNotificationChannel()
         btnRegister.setOnClickListener(View.OnClickListener{
             var checkRegister = false
@@ -130,6 +150,15 @@ class RegisterActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener
                 email.setError(null)
             }
 
+            val inputOtp = otp.getEditText()?.getText().toString()
+            if (otp.getEditText()?.getText().toString().isEmpty()) {
+                otp.setError("OTP must be filled with text")
+            }else if(inputOtp != key){
+                otp.setError("OTP Indvalid")
+            }else{
+                otp.setError(null)
+            }
+
             if (etTanggal!!.getText().isEmpty()) {
                 tanggal.setError("Tanggal Lahir must be filled with text")
             }else{
@@ -145,12 +174,8 @@ class RegisterActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener
             if(username.getError() == null && password.getError() == null && repeatPassword.getError() == null && email.getError() == null && tanggal.getError() == null && telepon.getError() == null) checkRegister = true
             if (!checkRegister) return@OnClickListener
             else{
-
-
                 register()
-
             }
-
         })
 
         textBtnSignIn.setOnClickListener {
@@ -293,5 +318,43 @@ class RegisterActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener
 
     private fun isValidEmail(email: String): Boolean {
         return Patterns.EMAIL_ADDRESS.matcher(email).matches()
+    }
+
+    private fun generateOTP(): String {
+        val randomPin = (Math.random() * 9000).toInt() + 1000
+        return randomPin.toString()
+    }
+
+    private fun sendEmail(){
+        val username = "dragneelnatsu128@gmail.com"
+        val password = "chuafbubyjmavbpv"
+
+        val messageText = "Please Verify Your Email with "
+        key = generateOTP()
+        val prop = Properties()
+        prop.put("mail.smtp.auth","true")
+        prop.put("mail.smtp.starttls.enable","true")
+        prop.put("mail.smtp.host","smtp.gmail.com")
+        prop.put("mail.smtp.port","587")
+        val session = Session.getDefaultInstance(prop, object : javax.mail.Authenticator() {
+            override fun getPasswordAuthentication(): PasswordAuthentication {
+                return PasswordAuthentication(username, password)
+            }
+        })
+        val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
+        StrictMode.setThreadPolicy(policy)
+        try {
+            val message = MimeMessage(session)
+            message.setFrom(InternetAddress(username))
+            message.setRecipient(Message.RecipientType.TO,InternetAddress(email.getEditText()?.getText().toString()))
+            message.setSubject("Registration Verification")
+            message.setText(messageText+key)
+            val smtpTransport = session.getTransport("smtp")
+            smtpTransport.connect()
+            smtpTransport.sendMessage(message, message.allRecipients)
+            smtpTransport.close()
+        }catch(messagingException: MessagingException){
+            messagingException.printStackTrace()
+        }
     }
 }

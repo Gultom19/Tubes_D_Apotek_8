@@ -3,6 +3,7 @@ package com.example.tugasbesar.map
 import android.content.Intent
 import android.os.Bundle
 import android.preference.PreferenceManager
+import android.util.DisplayMetrics
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.tugasbesar.R
@@ -17,6 +18,11 @@ import org.osmdroid.views.CustomZoomButtonsController
 import org.osmdroid.views.MapController
 import org.osmdroid.views.overlay.Marker
 import org.osmdroid.views.overlay.OverlayItem
+import org.osmdroid.views.overlay.ScaleBarOverlay
+import org.osmdroid.views.overlay.compass.CompassOverlay
+import org.osmdroid.views.overlay.compass.InternalCompassOrientationProvider
+import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider
+import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay
 import java.io.IOException
 import java.nio.charset.StandardCharsets
 
@@ -34,9 +40,21 @@ class MapActivity : AppCompatActivity() {
 
         val geoPoint = GeoPoint(-7.78165, 110.414497)
         mapView.setMultiTouchControls(true)
+        mapView.setBuiltInZoomControls(true)
         mapView.controller.animateTo(geoPoint)
         mapView.setTileSource(TileSourceFactory.DEFAULT_TILE_SOURCE)
         mapView.zoomController.setVisibility(CustomZoomButtonsController.Visibility.NEVER)
+
+        val dm : DisplayMetrics = this.resources.displayMetrics
+        val scaleBarOverlay = ScaleBarOverlay(mapView)
+        scaleBarOverlay.setCentred(true)
+//play around with these values to get the location on screen in the right place for your application
+        scaleBarOverlay.setScaleBarOffset(dm.widthPixels / 2, 10)
+        mapView.overlays.add(scaleBarOverlay)
+
+        val compassOverlay = CompassOverlay(this, InternalCompassOrientationProvider(this), mapView)
+        compassOverlay.enableCompass()
+        mapView.overlays.add(compassOverlay)
 
         mapController = mapView.controller as MapController
         mapController.setCenter(geoPoint)
@@ -111,6 +129,43 @@ class MapActivity : AppCompatActivity() {
                 item.showInfoWindow()
                 true
             }
+
+//            marker = MyLocationNewOverlay(GpsMyLocationProvider(this), mapView);
+//            this.overlayItem.enableMyLocation();
+//            mapView.overlays.add(marker)
+
+            mapView.overlays.add(marker)
+            mapView.invalidate()
+        }
+    }
+
+    private fun initMyMarker(modelList: List<ModelMain>) {
+        for (i in modelList.indices) {
+            overlayItem = ArrayList()
+            overlayItem.add(
+                OverlayItem(
+                    modelList[i].strName, modelList[i].strVicinity, GeoPoint(
+                        modelList[i].latLoc, modelList[i].longLoc
+                    )
+                )
+            )
+            val info = ModelMain()
+            info.strName = modelList[i].strName
+            info.strVicinity = modelList[i].strVicinity
+
+            val marker = Marker(mapView)
+            marker.icon = resources.getDrawable(R.drawable.ic_baseline_location_on_24)
+            marker.position = GeoPoint(modelList[i].latLoc, modelList[i].longLoc)
+            marker.relatedObject = info
+            marker.infoWindow = CustomInfoWindow(mapView)
+            marker.setOnMarkerClickListener { item, arg1 ->
+                item.showInfoWindow()
+                true
+            }
+
+//            marker = MyLocationNewOverlay(GpsMyLocationProvider(this), mapView);
+//            this.overlayItem.enableMyLocation();
+//            mapView.overlays.add(marker)
 
             mapView.overlays.add(marker)
             mapView.invalidate()
