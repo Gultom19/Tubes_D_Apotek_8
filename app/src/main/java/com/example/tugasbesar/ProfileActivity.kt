@@ -61,10 +61,10 @@ class ProfileActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener 
         btnCancel.setOnClickListener { finish() }
         val btnSave = binding.btnSave
         val sharedPreference =  getSharedPreferences(myPreference, Context.MODE_PRIVATE)
-//        val usernameKey = sharedPreference.getString("username","")
-
-//        getObatByUsername(usernameKey!!)
-//        btnSave.setOnClickListener { updateUser() }
+        val usernameKey = sharedPreference!!.getString("username","")
+        Log.d("tes",usernameKey!!)
+        getObatByUsername(usernameKey!!)
+        btnSave.setOnClickListener { updateUser(usernameKey) }
     }
 
     private fun getObatByUsername(username: String) {

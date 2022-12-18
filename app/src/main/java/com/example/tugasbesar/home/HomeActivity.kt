@@ -1,5 +1,6 @@
 package com.example.tugasbesar.home
 
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -15,6 +16,7 @@ class HomeActivity : AppCompatActivity() {
     lateinit var bottomNav : BottomNavigationView
     lateinit var mbundle : Bundle
     lateinit var vKey : String
+    private val myPreference = "myPref"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
@@ -22,6 +24,9 @@ class HomeActivity : AppCompatActivity() {
         getSupportActionBar()?.hide()
         changeFragment(FragmentObat())
         getBundle()
+        val sharedPreference = getSharedPreferences(myPreference, Context.MODE_PRIVATE)
+        val usernameKey = sharedPreference!!.getString("username","")
+        Log.d("tes",usernameKey!!)
 //        mbundle = intent?.getBundleExtra("key")!!
 //        vKey = mbundle.getString("username")!!
         bottomNav = findViewById(R.id.bottom_navigation)

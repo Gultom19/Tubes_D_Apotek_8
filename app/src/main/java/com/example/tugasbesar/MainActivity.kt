@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import android.widget.Button
@@ -114,14 +115,16 @@ class MainActivity : AppCompatActivity() {
 
                 if(user != null)
                     Toast.makeText(this@MainActivity, "Berhasil Login", Toast.LENGTH_SHORT).show()
-//                val sharedPreference =  getSharedPreferences(myPreference, Context.MODE_PRIVATE)
-//                var editor = sharedPreference.edit()
-//                editor.putString("username",user.username)
-//                editor.commit()
+                val sharedPreference =  getSharedPreferences(myPreference, Context.MODE_PRIVATE)
+                var editor = sharedPreference.edit()
+                editor.putString("username",inputUsername.getEditText()?.getText().toString())
+                editor.apply()
+
+//                Log.d("tespref",)
                 val moveHome = Intent(this@MainActivity, HomeActivity::class.java)
-                val mBundle = Bundle()
-                mBundle.putString("username", inputUsername.getEditText()?.getText().toString())
-                moveHome.putExtra("key", mBundle)
+//                val mBundle = Bundle()
+//                mBundle.putString("username", inputUsername.getEditText()?.getText().toString())
+//                moveHome.putExtra("key", mBundle)
                 startActivity(moveHome)
                 setLoading(false)
             }, Response.ErrorListener { error ->

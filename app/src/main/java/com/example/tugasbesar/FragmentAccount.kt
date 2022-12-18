@@ -1,5 +1,6 @@
 package com.example.tugasbesar
 
+import android.content.Context
 import android.content.Intent
 import android.widget.Button
 import android.os.Bundle
@@ -20,15 +21,13 @@ class FragmentAccount: Fragment(){
 //    private lateinit var binding: FragmentAccountBinding
     val db by lazy { UserDB(requireContext()) }
     private var userId: Int = 0
+    private val myPreference = "myPref"
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_account, container, false)
-//        val data = arguments
-//        val text = data!!.getString("key").toString()
-//        Log.d("key",text)
         return  view
     }
 
@@ -49,7 +48,7 @@ class FragmentAccount: Fragment(){
         }
 
         btnProfile.setOnClickListener(){
-            val toProfile = Intent(getActivity(), AboutActivity::class.java)
+            val toProfile = Intent(getActivity(), ProfileActivity::class.java)
             startActivity(toProfile)
         }
 
