@@ -51,6 +51,21 @@ class HomeActivity : AppCompatActivity() {
                 else -> false
             }
         }
+
+        topAppBar.setNavigationOnClickListener {
+            val back = Intent(this@HomeActivity, MapActivity::class.java)
+            startActivity(back)
+        }
+        topAppBar.setOnMenuItemClickListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.camera -> {
+                    val moveCamera = Intent(this@HomeActivity, CameraActivity::class.java)
+                    startActivity(moveCamera)
+                    true
+                }
+                else -> false
+            }
+        }
     }
 
     fun getBundle(){
@@ -74,19 +89,4 @@ class HomeActivity : AppCompatActivity() {
                 .commit()
         }
     }
-
-//    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-//        val menuInflater = MenuInflater(this)
-//        menuInflater.inflate(R.menu.bottom_navigation_menu, menu)
-//        return true
-//    }
-//
-//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-//        if(item.itemId == R.id.menu_home){
-//            changeFragment(FragmentObat())
-//        }else if(item.itemId == R.id.menu_feed){
-//            changeFragment(FragmentPromo())
-//        }
-//        return super.onOptionsItemSelected(item)
-//    }
 }
