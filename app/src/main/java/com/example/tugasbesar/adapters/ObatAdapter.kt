@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.tugasbesar.R
 import com.example.tugasbesar.admin.AddEditActivity
 import com.example.tugasbesar.admin.AdminActivity
+import com.example.tugasbesar.admin.AdminObatActivity
 import com.example.tugasbesar.models.Obat
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputEditText
@@ -61,7 +62,7 @@ class ObatAdapter (private var obatList: List<Obat>, context: Context) :
                 .setMessage("Apakah anda yakin ingin menghapus data produk ini?")
                 .setNegativeButton("Batal", null)
                 .setPositiveButton("Hapus") { _, _ ->
-                    if (context is AdminActivity) obat.id?.let { it1 ->
+                    if (context is AdminObatActivity) obat.id?.let { it1 ->
                         context.deleteObat(
                             it1
                         )
@@ -72,8 +73,8 @@ class ObatAdapter (private var obatList: List<Obat>, context: Context) :
         holder.cvObat.setOnClickListener {
             val i = Intent(context, AddEditActivity::class.java)
             i.putExtra("id", obat.id)
-            if (context is AdminActivity)
-                context.startActivityForResult(i, AdminActivity.LAUNCH_ADD_ACTIVITY)
+            if (context is AdminObatActivity)
+                context.startActivityForResult(i, AdminObatActivity.LAUNCH_ADD_ACTIVITY)
         }
     }
 

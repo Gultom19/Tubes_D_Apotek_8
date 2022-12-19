@@ -24,6 +24,7 @@ import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.example.tugasbesar.adapters.CategoryObatAdapter
 import com.example.tugasbesar.admin.AdminActivity
+import com.example.tugasbesar.admin.AdminObatActivity
 import com.example.tugasbesar.api.ObatApi
 import com.example.tugasbesar.api.TransaksiApi
 import com.example.tugasbesar.camera.CameraActivity
@@ -215,7 +216,7 @@ class CategoryObatActivity : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == AdminActivity.LAUNCH_ADD_ACTIVITY && resultCode == RESULT_OK) allObat()
+        if (requestCode == AdminObatActivity.LAUNCH_ADD_ACTIVITY && resultCode == RESULT_OK) allObat()
     }
 
     // Fungsi ini digunakan menampilkan layout loading
