@@ -36,8 +36,14 @@ class AdminActivity : AppCompatActivity() {
 
         val btnCategoryObat: Button = findViewById<Button>(R.id.btnAdminObat)
         btnCategoryObat.setOnClickListener(){
-            val toAdminObat = Intent(this@AdminActivity, AdminObatActivity::class.java)
+            val toAdminObat = Intent(this@AdminActivity, AdminKontrasepsiActivity::class.java)
             startActivity(toAdminObat)
+        }
+
+        val btnCategoryKontrasepsi: Button = findViewById<Button>(R.id.btnAdminKontrasepsi)
+        btnCategoryKontrasepsi.setOnClickListener(){
+            val toAdminKontrasepsi = Intent(this@AdminActivity, AdminKontrasepsiActivity::class.java)
+            startActivity(toAdminKontrasepsi)
         }
     }
 }

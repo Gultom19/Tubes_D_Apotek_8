@@ -15,4 +15,10 @@
         android:layout_height="wrap_content"
         android:text="Obat"/>
 
+    <Button
+        android:id="@+id/btnAdminKontrasepsi"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Kontrasepsi"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
