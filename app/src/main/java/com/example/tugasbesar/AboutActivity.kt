@@ -1,12 +1,16 @@
 package com.example.tugasbesar
 
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
+import com.example.tugasbesar.home.HomeActivity
+import com.example.tugasbesar.map.MapActivity
 import com.ramotion.paperonboarding.PaperOnboardingFragment
 import com.ramotion.paperonboarding.PaperOnboardingPage
+import kotlinx.android.synthetic.main.activity_home.*
 
 
 class AboutActivity : AppCompatActivity() {
@@ -30,6 +34,11 @@ class AboutActivity : AppCompatActivity() {
 
         // all the changes are committed
         fragmentTransaction.commit()
+
+        topAppBar.setNavigationOnClickListener {
+            val back = Intent(this@AboutActivity, HomeActivity::class.java)
+            startActivity(back)
+        }
     }
 
     private fun getDataforOnboarding(): ArrayList<PaperOnboardingPage>? {
@@ -41,7 +50,7 @@ class AboutActivity : AppCompatActivity() {
         // and at last icon to navigate from one screen to other
         val source = PaperOnboardingPage(
             "Aplikasi Hans Apotik",
-            "Aplikasi beli obat secara online ya... Hans Apotik. Salah satu aplikasi beli obat secara online adalah Hans Apotik. Hans Apotik yang memiliki slogan #obataslikapanpun hadir sebagai Platform Beli Obat Online pertama di Indonesia yang benar-benar buka 24 jam nonstop dan terlengkap di Indonesia. Aplikasi beli obat online",
+            "Aplikasi beli obat secara online",
             Color.parseColor("#ffb174"),
             R.drawable.logoapk,
             org.osmdroid.library.R.drawable.person
