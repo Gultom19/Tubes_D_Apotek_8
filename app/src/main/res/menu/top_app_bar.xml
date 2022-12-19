@@ -8,4 +8,11 @@
         android:title="Camera"
         app:showAsAction="ifRoom" />
 
+    <item
+        android:id="@+id/qrscan"
+        android:icon="@drawable/ic_baseline_qr_code_scanner_24"
+        android:enabled="true"
+        android:title="Camera"
+        app:showAsAction="ifRoom" />
+
 </menu>

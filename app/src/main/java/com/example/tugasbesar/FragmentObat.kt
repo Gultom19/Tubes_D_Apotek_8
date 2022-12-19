@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.tugasbesar.databinding.ActivityMainBinding
 import com.example.tugasbesar.entity.Promo
 import com.example.tugasbesar.models.Obat
+import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.fragment_account.*
 
 //aa
@@ -24,7 +25,7 @@ class FragmentObat: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val btnCategoryObat: Button = view.findViewById(R.id.btnCategoryObat)
+        val btnCategoryObat: CircleImageView = view.findViewById(R.id.btnCategoryObat)
         btnCategoryObat.setOnClickListener(){
             val toCategoryObat = Intent(getActivity(), CategoryObatActivity::class.java)
             startActivity(toCategoryObat)

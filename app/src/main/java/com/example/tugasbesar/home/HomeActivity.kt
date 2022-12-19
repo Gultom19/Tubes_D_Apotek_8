@@ -8,6 +8,7 @@ import android.util.Log
 import androidx.fragment.app.Fragment
 import com.example.tugasbesar.*
 import com.example.tugasbesar.camera.CameraActivity
+import com.example.tugasbesar.camera.QrActivity
 import com.example.tugasbesar.map.MapActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_home.*
@@ -66,6 +67,11 @@ class HomeActivity : AppCompatActivity() {
                 R.id.camera -> {
                     val moveCamera = Intent(this@HomeActivity, CameraActivity::class.java)
                     startActivity(moveCamera)
+                    true
+                }
+                R.id.qrscan -> {
+                    val moveQr = Intent(this@HomeActivity, QrActivity::class.java)
+                    startActivity(moveQr)
                     true
                 }
                 else -> false

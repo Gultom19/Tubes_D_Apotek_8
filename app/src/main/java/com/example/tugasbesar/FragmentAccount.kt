@@ -21,7 +21,6 @@ class FragmentAccount: Fragment(){
 //    private lateinit var binding: FragmentAccountBinding
     val db by lazy { UserDB(requireContext()) }
     private var userId: Int = 0
-    private val myPreference = "myPref"
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

@@ -3,14 +3,19 @@ package com.example.tugasbesar.camera
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.ContentValues
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.hardware.*
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
 import android.view.View
+import android.widget.FrameLayout
+import android.widget.ImageButton
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
@@ -24,209 +29,101 @@ import com.google.mlkit.vision.barcode.common.Barcode
 import com.google.mlkit.vision.common.InputImage
 import kotlinx.android.synthetic.main.activity_map.*
 
-class CameraActivity : AppCompatActivity(), View.OnClickListener {
-//    private var mCamera: Camera? = null
-//    private var mCameraView: CameraView? = null
-
-    private lateinit var binding: ActivityCameraBinding
-    companion object{
-        private const val CAMERA_REQUEST_CODE = 100
-        private const val TAG = "MAIN_TAG"
-    }
-    private lateinit var cameraPermission: Array<String>
-
-    private var imageUri: Uri? = null
-
-    private var barcodeScannerOption: BarcodeScannerOptions? = null
-    private var barcodeScanner: BarcodeScanner? = null
+class CameraActivity : AppCompatActivity(){
+    private var mCamera: Camera? = null
+    private var mCameraView: CameraView? = null
+    lateinit var sensorStatusTV: TextView
+    lateinit var proximitySensor: Sensor
+    lateinit var sensorManager: SensorManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityCameraBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        setContentView(R.layout.activity_camera)
         getSupportActionBar()?.hide();
 
-        binding.cameraButton.setOnClickListener(this)
-        binding.scanBtn.setOnClickListener(this)
+        sensorStatusTV = findViewById(R.id.idTVSensorStatus)
 
-        cameraPermission = arrayOf(android.Manifest.permission.CAMERA, android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
 
-        barcodeScannerOption = BarcodeScannerOptions.Builder().setBarcodeFormats(Barcode.FORMAT_ALL_FORMATS).build()
-        barcodeScanner = BarcodeScanning.getClient(barcodeScannerOption!!)
-    }
+        proximitySensor = sensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY)
 
-    override fun onClick(v: View?) {
-        when(v?.id){
-            R.id.cameraButton -> {
-                if(checkCameraPermission()){
-                    pickImageCamera()
-                }else{
-                    requestCameraPermission()
-                }
-            }
-            R.id.scanBtn ->{
-                if(imageUri == null){
-                    showToast("Pick image first")
-                }else{
-                    detectResultFromImage()
-                }
-            }
+        if (proximitySensor == null) {
+            Toast.makeText(this, "No proximity sensor found in device..", Toast.LENGTH_SHORT).show()
+            finish()
+        } else {
+            sensorManager.registerListener(
+                proximitySensorEventListener,
+                proximitySensor,
+                SensorManager.SENSOR_DELAY_NORMAL
+            )
         }
     }
 
-    private fun checkCameraPermission():Boolean{
-        val resultCamera = (ContextCompat.checkSelfPermission(this,android.Manifest.permission.CAMERA)
-                == PackageManager.PERMISSION_GRANTED)
-        val resultStorage = (ContextCompat.checkSelfPermission(this,android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                == PackageManager.PERMISSION_GRANTED)
-        return resultCamera && resultStorage
+    private fun openFrontFacingCamera(): Camera? {
+        var cameraCount = 0
+        var cam: Camera? = null
+        val cameraInfo = Camera.CameraInfo()
+        cameraCount = Camera.getNumberOfCameras()
+        for (camIdx in 0 until cameraCount) {
+            Camera.getCameraInfo(camIdx, cameraInfo)
+            if (cameraInfo.facing == Camera.CameraInfo.CAMERA_FACING_FRONT) {
+                try {
+                    cam = Camera.open(camIdx)
+                } catch (e: RuntimeException) {
+                    Log.e("Your_TAG", "Camera failed to open: " + e.localizedMessage)
+                }
+            }
+        }
+        return cam
     }
 
-    private fun requestCameraPermission(){
-        ActivityCompat.requestPermissions(this,cameraPermission, CAMERA_REQUEST_CODE)
+    private fun openBackFacingCamera(): Camera? {
+        var cameraCount = 0
+        var cam: Camera? = null
+        val cameraInfo = Camera.CameraInfo()
+        cameraCount = Camera.getNumberOfCameras()
+        for (camIdx in 0 until cameraCount) {
+            Camera.getCameraInfo(camIdx, cameraInfo)
+            if (cameraInfo.facing == Camera.CameraInfo.CAMERA_FACING_BACK) {
+                try {
+                    cam = Camera.open(camIdx)
+                } catch (e: RuntimeException) {
+                    Log.e("Your_TAG", "Camera failed to open: " + e.localizedMessage)
+                }
+            }
+        }
+        return cam
     }
 
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+    var proximitySensorEventListener: SensorEventListener? = object: SensorEventListener {
+        override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {
+        }
 
-        when(requestCode){
-            CAMERA_REQUEST_CODE ->{
-                if(grantResults.isNotEmpty()){
-                    val cameraAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED
-                    val storageAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED
-
-                    if(cameraAccepted&&storageAccepted){
-                        pickImageCamera()
-                    }else{
-                        showToast("Camera And Storage Permission Are Required")
+        override fun onSensorChanged(event: SensorEvent?) {
+            if (event?.sensor?.type == Sensor.TYPE_PROXIMITY) {
+                if (event.values[0] == 0f) {
+                    try{
+                        mCamera = openFrontFacingCamera()
+                    }catch (e: Exception){
+                        Log.d("error", "Failed to get Camera" + e.message)
                     }
-                }
-            }
-        }
-    }
-
-    private fun showToast(message: String){
-        Toast.makeText(this,message, Toast.LENGTH_SHORT).show()
-    }
-
-    private fun pickImageCamera(){
-        val contentValues = ContentValues()
-        contentValues.put(MediaStore.Images.Media.TITLE,"Foto Sample")
-        contentValues.put(MediaStore.Images.Media.DESCRIPTION,"Deskripsi Foto Sample")
-
-        imageUri = contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,contentValues)
-
-        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        intent.putExtra(MediaStore.EXTRA_OUTPUT,imageUri)
-
-        cameraActivityResultLauncher.launch(intent)
-    }
-
-    private val cameraActivityResultLauncher = registerForActivityResult(
-        ActivityResultContracts.StartActivityForResult()
-    ){result->
-        if(result.resultCode == Activity.RESULT_OK){
-            val data = result.data
-            Log.d(TAG,"cameraActivityResultLauncher: imageUri: $imageUri")
-
-            binding.imageTv.setImageURI(imageUri)
-        }
-    }
-
-    private fun detectResultFromImage(){
-        try{
-            val inputImage = InputImage.fromFilePath(this,imageUri!!)
-
-            val barcodeResult = barcodeScanner?.process(inputImage)
-                ?.addOnSuccessListener { barcodes->
-                    extractbarcodeQrCodeInfo(barcodes)
-                }
-                ?.addOnFailureListener{ e ->
-                    Log.d(TAG,"detectResultFromImage: ",e)
-                    showToast("Failed scanning due to ${e.message}")
-                }
-        }catch (e: Exception){
-            Log.d(TAG,"detectResultFromImage: ",e)
-            showToast("Failed due to ${e.message}")
-        }
-    }
-
-    @SuppressLint("SetTextI18n")
-    private fun extractbarcodeQrCodeInfo(barcodes: List<Barcode>){
-        for (barcode in barcodes){
-            val bound = barcode.boundingBox
-            val corner = barcode.cornerPoints
-
-            val rawValue = barcode.rawValue
-            Log.d(TAG,"ExtractBarcodeCodeInfo: RawValue : $rawValue")
-
-            val valueType = barcode.valueType
-            when(valueType){
-                Barcode.TYPE_WIFI->{
-                    val typeWifi = barcode.wifi
-                    val ssid = "${typeWifi?.ssid}"
-                    val password = "${typeWifi?.password}"
-                    var encryptionType = "${typeWifi?.encryptionType}"
-
-                    if(encryptionType == "1"){
-                        encryptionType = "OPEN"
-                    }else if(encryptionType == "2"){
-                        encryptionType = "WPA"
-                    }else if(encryptionType == "3"){
-                        encryptionType = "WEP"
+                    if (mCamera != null){
+                        mCameraView = CameraView(this@CameraActivity, mCamera!!)
+                        val camera_view = findViewById<View>(R.id.FLCamera) as FrameLayout
+                        camera_view.addView(mCameraView)
                     }
-                    Log.d(TAG,"extractbarcodeQrCodeInfo: TYPE_WIFI")
-                    Log.d(TAG,"extractbarcodeQrCodeInfo: ssid: $ssid")
-                    Log.d(TAG,"extractbarcodeQrCodeInfo: password:$password")
-                    Log.d(TAG,"extractbarcodeQrCodeInfo: encryptionType:$encryptionType")
-                    binding.resultView.text =
-                        "TYPE_WIFI \n ssid: $ssid \npassword: $password\nencryptionType: $encryptionType" + "\n\nrawValue : $rawValue"
-                }
-                Barcode.TYPE_URL -> {
-                    val typeUrl = barcode.url
-                    val title = "${typeUrl?.title}"
-                    val url = "${typeUrl?.url}"
-                    Log.d(TAG,"extractbarcodeQrCodeInfo: TYPE_URL")
-                    Log.d(TAG,"extractbarcodeQrCodeInfo: title: $title")
-                    Log.d(TAG,"extractbarcodeQrCodeInfo: url: $url")
-                    binding.resultView.text =
-                        "TYPE_URL \ntitle: $title \nurl: $url \n\nrawValue: $rawValue"
-                }
-                Barcode.TYPE_EMAIL -> {
-                    val typeEmail = barcode.email
-                    val address = "${typeEmail?.address}"
-                    val body = "${typeEmail?.body}"
-                    val subject = "${typeEmail?.subject}"
-                    Log.d(TAG,"extractbarcodeQrCodeInfo: TYPE_EMAIL")
-                    Log.d(TAG,"extractbarcodeQrCodeInfo: address:$address")
-                    Log.d(TAG,"extractbarcodeQrCodeInfo: body: $body")
-                    Log.d(TAG,"extractbarcodeQrCodeInfo: subject:$subject")
-                    binding.resultView.text =
-                        "TYPE_EMAIL \ntitle: $address \nurl: $body\nsubject: $subject \n\nrawValue : $rawValue"
-                }
-                Barcode.TYPE_CONTACT_INFO -> {
-                    val typeContact = barcode.contactInfo
-                    val title = "${typeContact?.title}"
-                    val organisasi = "${typeContact?.organization}"
-                    val name = "${typeContact?.name}"
-                    val phone = "${typeContact?.phones}"
-                    Log.d(TAG,"extractbarcodeQrCodeInfo: TYPE_CONTACT_INFO")
-                    Log.d(TAG,"extractbarcodeQrCodeInfo: Title: $title")
-                    Log.d(TAG,"extractbarcodeQrCodeInfo: Organization:$organisasi")
-                    Log.d(TAG,"extractbarcodeQrCodeInfo: nama: $name")
-                    Log.d(TAG,"extractbarcodeQrCodeInfo: Phone: $phone")
-                    binding.resultView.text = "TYPE_CONTACT_INFO " +
-                            "\ntitle: $title " +
-                            "\nnama: $name " +
-                            "\norganization: $organisasi " +
-                            "\nPhone : $phone" + "\n\nrawValue :$rawValue"
-                }
-                else -> {
-                    binding.resultView.text = "rawValue: $rawValue"
+
+                } else {
+                    try{
+                        mCamera = openBackFacingCamera()
+                    }catch (e: Exception){
+                        Log.d("error", "Failed to get Camera" + e.message)
+                    }
+                    if (mCamera != null){
+                        mCameraView = CameraView(this@CameraActivity, mCamera!!)
+                        val camera_view = findViewById<View>(R.id.FLCamera) as FrameLayout
+                        camera_view.addView(mCameraView)
+                    }
                 }
             }
         }
