@@ -18,4 +18,9 @@
         android:layout_height="100dp"
         android:src="@drawable/iconkontrasepsi" />
 
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/btnCategorySuplemen"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/iconsuplemen" />
 </androidx.constraintlayout.widget.ConstraintLayout>
