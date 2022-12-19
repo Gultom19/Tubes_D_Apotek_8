@@ -12,4 +12,10 @@
         android:layout_height="100dp"
         android:src="@drawable/iconobat" />
 
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/btnCategoryKontrasepsi"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/iconkontrasepsi" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
