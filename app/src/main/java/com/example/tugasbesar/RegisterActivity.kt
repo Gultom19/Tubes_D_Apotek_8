@@ -46,6 +46,9 @@ import javax.mail.Transport
 import javax.mail.internet.InternetAddress
 import javax.mail.internet.MimeMessage
 import android.os.StrictMode
+import androidx.core.content.res.ResourcesCompat
+import www.sanju.motiontoast.MotionToast
+import www.sanju.motiontoast.MotionToastStyle
 
 
 class RegisterActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener {
@@ -210,11 +213,14 @@ class RegisterActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener
                 var user = gson.fromJson(response, User::class.java)
 
                 if(user != null)
-                    Toast.makeText(this@RegisterActivity, "Berhasil Register", Toast.LENGTH_SHORT).show()
+                    MotionToast.createToast(this@RegisterActivity,
+                        "Hurray success",
+                        "BERHASIL LOGIN",
+                        MotionToastStyle.SUCCESS,
+                        MotionToast.GRAVITY_BOTTOM,
+                        MotionToast.LONG_DURATION,
+                        ResourcesCompat.getFont(this, www.sanju.motiontoast.R.font.helvetica_regular))
 
-//                val returnIntent = Intent()
-//                setResult(RESULT_OK, returnIntent)
-//                finish()
                 val moveMain = Intent(this@RegisterActivity, MainActivity::class.java)
                 val mBundle = Bundle()
                 mBundle.putString("username", username.getEditText()?.getText().toString())
@@ -228,14 +234,22 @@ class RegisterActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener
                 try {
                     val responseBody = String(error.networkResponse.data, StandardCharsets.UTF_8)
                     val errors = JSONObject(responseBody)
-                    Toast.makeText(
-                        this@RegisterActivity,
+                    MotionToast.createToast(this@RegisterActivity,
+                        "Failed",
                         errors.getString("message"),
-                        Toast.LENGTH_SHORT
-                    ).show()
+                        MotionToastStyle.ERROR,
+                        MotionToast.GRAVITY_BOTTOM,
+                        MotionToast.LONG_DURATION,
+                        ResourcesCompat.getFont(this, www.sanju.motiontoast.R.font.helvetica_regular))
                 } catch (e: Exception) {
 //                 email.setError("Email must unique")
-                Toast.makeText(this@RegisterActivity, e.message, Toast.LENGTH_SHORT).show()
+                    MotionToast.createToast(this@RegisterActivity,
+                        "Warning",
+                        e.message!!,
+                        MotionToastStyle.WARNING,
+                        MotionToast.GRAVITY_BOTTOM,
+                        MotionToast.LONG_DURATION,
+                        ResourcesCompat.getFont(this, www.sanju.motiontoast.R.font.helvetica_regular))
                 }
             }) {
                 @Throws(AuthFailureError::class)

@@ -12,6 +12,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.res.ResourcesCompat
 import com.android.volley.AuthFailureError
 import com.android.volley.RequestQueue
 import com.android.volley.Response
@@ -29,6 +30,9 @@ import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_main.*
 import org.bouncycastle.cms.RecipientId.password
 import org.json.JSONObject
+import www.sanju.motiontoast.MotionToast
+import www.sanju.motiontoast.MotionToastStyle
+import www.sanju.motiontoast.R.font
 import java.nio.charset.StandardCharsets
 
 
@@ -114,17 +118,19 @@ class MainActivity : AppCompatActivity() {
                 var user = gson.fromJson(response, User::class.java)
 
                 if(user != null)
-                    Toast.makeText(this@MainActivity, "Berhasil Login", Toast.LENGTH_SHORT).show()
+                    MotionToast.createToast(this@MainActivity,
+                        "Hurray success",
+                        "BERHASIL LOGIN",
+                        MotionToastStyle.SUCCESS,
+                        MotionToast.GRAVITY_BOTTOM,
+                        MotionToast.LONG_DURATION,
+                        ResourcesCompat.getFont(this, www.sanju.motiontoast.R.font.helvetica_regular))
                 val sharedPreference =  getSharedPreferences(myPreference, Context.MODE_PRIVATE)
                 var editor = sharedPreference.edit()
                 editor.putString("username",inputUsername.getEditText()?.getText().toString())
                 editor.apply()
 
-//                Log.d("tespref",)
                 val moveHome = Intent(this@MainActivity, HomeActivity::class.java)
-//                val mBundle = Bundle()
-//                mBundle.putString("username", inputUsername.getEditText()?.getText().toString())
-//                moveHome.putExtra("key", mBundle)
                 startActivity(moveHome)
                 setLoading(false)
             }, Response.ErrorListener { error ->
@@ -132,15 +138,23 @@ class MainActivity : AppCompatActivity() {
                 try {
                     val responseBody = String(error.networkResponse.data, StandardCharsets.UTF_8)
                     val errors = JSONObject(responseBody)
-                    Toast.makeText(
-                        this@MainActivity,
+                    MotionToast.createToast(this@MainActivity,
+                        "Failed",
                         errors.getString("message"),
-                        Toast.LENGTH_SHORT
-                    ).show()
+                        MotionToastStyle.ERROR,
+                        MotionToast.GRAVITY_BOTTOM,
+                        MotionToast.LONG_DURATION,
+                        ResourcesCompat.getFont(this, www.sanju.motiontoast.R.font.helvetica_regular))
                 } catch (e: Exception) {
 //                    inputUsername.setError("Username or Password invalid")
 //                    inputPassword.setError("Username or Password invalid")
-                    Toast.makeText(this@MainActivity, e.message, Toast.LENGTH_SHORT).show()
+                    MotionToast.createToast(this@MainActivity,
+                        "Warning",
+                        e.message!!,
+                        MotionToastStyle.WARNING,
+                        MotionToast.GRAVITY_BOTTOM,
+                        MotionToast.LONG_DURATION,
+                        ResourcesCompat.getFont(this, www.sanju.motiontoast.R.font.helvetica_regular))
                 }
             }) {
                 @Throws(AuthFailureError::class)
