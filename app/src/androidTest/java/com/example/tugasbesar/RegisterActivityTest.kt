@@ -4,8 +4,6 @@ package com.example.tugasbesar
 import android.view.View
 import android.view.ViewGroup
 import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.UiController
-import androidx.test.espresso.ViewAction
 import androidx.test.espresso.action.ViewActions.*
 import androidx.test.espresso.assertion.ViewAssertions.*
 import androidx.test.espresso.matcher.ViewMatchers.*
@@ -31,7 +29,6 @@ class RegisterActivityTest {
 
     @Test
     fun registerActivityTest() {
-        //tes inputan kosong
         val appCompatButton = onView(
             allOf(
                 withId(R.id.btnRegister), withText("Sign Up"),
@@ -45,7 +42,6 @@ class RegisterActivityTest {
             )
         )
         appCompatButton.perform(scrollTo(), click())
-        onView(isRoot()).perform(waitFor(3000))
 
         val textInputEditText = onView(
             allOf(
@@ -77,7 +73,6 @@ class RegisterActivityTest {
         )
         textInputEditText2.perform(replaceText("q"), closeSoftKeyboard())
 
-        // tes repeat password tidak sama dengan password
         val textInputEditText3 = onView(
             allOf(
                 withId(R.id.etRegisRepeatPassword),
@@ -93,7 +88,6 @@ class RegisterActivityTest {
         )
         textInputEditText3.perform(replaceText("w"), closeSoftKeyboard())
 
-        // tes format email
         val textInputEditText4 = onView(
             allOf(
                 withId(R.id.etEmail),
@@ -111,6 +105,21 @@ class RegisterActivityTest {
 
         val textInputEditText5 = onView(
             allOf(
+                withId(R.id.etOTP),
+                childAtPosition(
+                    childAtPosition(
+                        withId(R.id.inputLayoutOTP),
+                        0
+                    ),
+                    0
+                ),
+                isDisplayed()
+            )
+        )
+        textInputEditText5.perform(replaceText("a"), closeSoftKeyboard())
+
+        val textInputEditText6 = onView(
+            allOf(
                 withId(R.id.etTanggalLahir),
                 childAtPosition(
                     childAtPosition(
@@ -122,7 +131,7 @@ class RegisterActivityTest {
                 isDisplayed()
             )
         )
-        textInputEditText5.perform(click())
+        textInputEditText6.perform(click())
 
         val appCompatButton2 = onView(
             allOf(
@@ -138,7 +147,7 @@ class RegisterActivityTest {
         )
         appCompatButton2.perform(scrollTo(), click())
 
-        val textInputEditText6 = onView(
+        val textInputEditText7 = onView(
             allOf(
                 withId(R.id.etTelepon),
                 childAtPosition(
@@ -151,7 +160,7 @@ class RegisterActivityTest {
                 isDisplayed()
             )
         )
-        textInputEditText6.perform(replaceText("2"), closeSoftKeyboard())
+        textInputEditText7.perform(replaceText("1"), closeSoftKeyboard())
 
         val appCompatButton3 = onView(
             allOf(
@@ -166,9 +175,8 @@ class RegisterActivityTest {
             )
         )
         appCompatButton3.perform(scrollTo(), click())
-        onView(isRoot()).perform(waitFor(3000))
 
-        val textInputEditText7 = onView(
+        val textInputEditText8 = onView(
             allOf(
                 withId(R.id.etRegisRepeatPassword), withText("w"),
                 childAtPosition(
@@ -181,9 +189,9 @@ class RegisterActivityTest {
                 isDisplayed()
             )
         )
-        textInputEditText7.perform(replaceText("q"))
+        textInputEditText8.perform(replaceText("q"))
 
-        val textInputEditText8 = onView(
+        val textInputEditText9 = onView(
             allOf(
                 withId(R.id.etRegisRepeatPassword), withText("q"),
                 childAtPosition(
@@ -196,10 +204,9 @@ class RegisterActivityTest {
                 isDisplayed()
             )
         )
-        textInputEditText8.perform(closeSoftKeyboard())
+        textInputEditText9.perform(closeSoftKeyboard())
 
-        //tes email unique
-        val textInputEditText9 = onView(
+        val textInputEditText10 = onView(
             allOf(
                 withId(R.id.etEmail), withText("q"),
                 childAtPosition(
@@ -212,11 +219,11 @@ class RegisterActivityTest {
                 isDisplayed()
             )
         )
-        textInputEditText9.perform(replaceText("q@q.com"))
+        textInputEditText10.perform(replaceText("dragneelnatsu128@gmail.com"))
 
-        val textInputEditText10 = onView(
+        val textInputEditText11 = onView(
             allOf(
-                withId(R.id.etEmail), withText("q@q.com"),
+                withId(R.id.etEmail), withText("dragneelnatsu128@gmail.com"),
                 childAtPosition(
                     childAtPosition(
                         withId(R.id.inputLayoutEmail),
@@ -227,7 +234,54 @@ class RegisterActivityTest {
                 isDisplayed()
             )
         )
-        textInputEditText10.perform(closeSoftKeyboard())
+        textInputEditText11.perform(closeSoftKeyboard())
+
+        val appCompatImageButton = onView(
+            allOf(
+                withId(R.id.btn_sendEmail),
+                childAtPosition(
+                    allOf(
+                        withId(R.id.ll_email),
+                        childAtPosition(
+                            withId(R.id.linearLayout),
+                            3
+                        )
+                    ),
+                    1
+                )
+            )
+        )
+        appCompatImageButton.perform(scrollTo(), click())
+
+        val textInputEditText12 = onView(
+            allOf(
+                withId(R.id.etOTP), withText("a"),
+                childAtPosition(
+                    childAtPosition(
+                        withId(R.id.inputLayoutOTP),
+                        0
+                    ),
+                    0
+                ),
+                isDisplayed()
+            )
+        )
+        textInputEditText12.perform(replaceText("3085"))
+
+        val textInputEditText13 = onView(
+            allOf(
+                withId(R.id.etOTP), withText("3085"),
+                childAtPosition(
+                    childAtPosition(
+                        withId(R.id.inputLayoutOTP),
+                        0
+                    ),
+                    0
+                ),
+                isDisplayed()
+            )
+        )
+        textInputEditText13.perform(closeSoftKeyboard())
 
         val appCompatButton4 = onView(
             allOf(
@@ -242,82 +296,6 @@ class RegisterActivityTest {
             )
         )
         appCompatButton4.perform(scrollTo(), click())
-        onView(isRoot()).perform(waitFor(3000))
-
-        val textInputEditText11 = onView(
-            allOf(
-                withId(R.id.etEmail), withText("q@q.com"),
-                childAtPosition(
-                    childAtPosition(
-                        withId(R.id.inputLayoutEmail),
-                        0
-                    ),
-                    0
-                ),
-                isDisplayed()
-            )
-        )
-        textInputEditText11.perform(click())
-
-        val textInputEditText12 = onView(
-            allOf(
-                withId(R.id.etEmail), withText("q@q.com"),
-                childAtPosition(
-                    childAtPosition(
-                        withId(R.id.inputLayoutEmail),
-                        0
-                    ),
-                    0
-                ),
-                isDisplayed()
-            )
-        )
-        textInputEditText12.perform(click())
-
-        val textInputEditText13 = onView(
-            allOf(
-                withId(R.id.etEmail), withText("q@q.com"),
-                childAtPosition(
-                    childAtPosition(
-                        withId(R.id.inputLayoutEmail),
-                        0
-                    ),
-                    0
-                ),
-                isDisplayed()
-            )
-        )
-        textInputEditText13.perform(replaceText("q@w.com"))
-
-        val textInputEditText14 = onView(
-            allOf(
-                withId(R.id.etEmail), withText("q@w.com"),
-                childAtPosition(
-                    childAtPosition(
-                        withId(R.id.inputLayoutEmail),
-                        0
-                    ),
-                    0
-                ),
-                isDisplayed()
-            )
-        )
-        textInputEditText14.perform(closeSoftKeyboard())
-
-        val appCompatButton5 = onView(
-            allOf(
-                withId(R.id.btnRegister), withText("Sign Up"),
-                childAtPosition(
-                    childAtPosition(
-                        withId(R.id.scroll_view),
-                        0
-                    ),
-                    1
-                )
-            )
-        )
-        appCompatButton5.perform(scrollTo(), click())
-        onView(isRoot()).perform(waitFor(3000))
     }
 
     private fun childAtPosition(
@@ -334,22 +312,6 @@ class RegisterActivityTest {
                 val parent = view.parent
                 return parent is ViewGroup && parentMatcher.matches(parent)
                         && view == parent.getChildAt(position)
-            }
-        }
-    }
-
-    fun waitFor(delay: Long): ViewAction? {
-        return object : ViewAction {
-            override fun getConstraints(): Matcher<View> {
-                return isRoot()
-            }
-
-            override fun getDescription(): String {
-                return "wait for " + delay + "milliseconds"
-            }
-
-            override fun perform(uiController: UiController, view: View) {
-                uiController.loopMainThreadForAtLeast(delay)
             }
         }
     }

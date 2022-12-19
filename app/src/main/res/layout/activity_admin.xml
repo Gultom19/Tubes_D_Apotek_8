@@ -13,12 +13,16 @@
         android:id="@+id/btnAdminObat"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Obat"/>
+        android:text="Obat"
+        tools:layout_editor_absoluteX="161dp"
+        tools:layout_editor_absoluteY="128dp" />
 
     <Button
         android:id="@+id/btnAdminKontrasepsi"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Kontrasepsi"/>
+        android:text="Kontrasepsi"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="49dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
